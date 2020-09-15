@@ -50,7 +50,7 @@
         android:id="@+id/textView2"
         android:layout_width="331dp"
         android:layout_height="51dp"
-        android:text="Take a picture in landscape mode after selecting scan. Be sure to have the top of the phone poiting to your right."
+        android:text="Take a picture in portrait mode."
         app:layout_constraintBottom_toTopOf="@+id/todayBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

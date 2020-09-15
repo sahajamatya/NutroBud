@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +47,6 @@ public class Dashboard extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private DatabaseReference imgPostStatus;
-    private DatabaseReference imgScanStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class Dashboard extends AppCompatActivity {
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
-        imgScanStatus = database.getReference().child("imgScanStatus");
+
 
 
         scanBtn = findViewById(R.id.scanBtn);
@@ -89,30 +90,20 @@ public class Dashboard extends AppCompatActivity {
 
     private void uploadPicture() {
         StorageReference Ref = storageReference.child("image.jpg");
-        Ref.putFile(pictureURI);
-        updateDatabase();
+        Ref.putFile(pictureURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                updateDatabase();
+                openScanResult();
+            }
+        });
     }
 
     public void updateDatabase() {
         HashMap updatedValue = new HashMap();
         updatedValue.put("isImageToScan", true);
         imgPostStatus.updateChildren(updatedValue);
-        imgScanStatus.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
-                HashMap desiredScanStatus= new HashMap();
-                desiredScanStatus.put("isFinishedScanning", true);//make this more elegant - sahajamatya 09/14
-                if(scanStatus.equals(desiredScanStatus)){
-                    openScanResult();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     public void openScanResult(){

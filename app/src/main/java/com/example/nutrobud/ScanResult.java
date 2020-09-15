@@ -1,5 +1,6 @@
 package com.example.nutrobud;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DownloadManager;
@@ -9,14 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
@@ -25,8 +31,11 @@ public class ScanResult extends AppCompatActivity {
     //firebase gang
     private FirebaseStorage storage;
     private StorageReference storageReference;
-    StorageReference ref;
-    private DatabaseReference nutroBudDB;
+    private StorageReference ref;
+    private DatabaseReference imgScanStatus;
+
+    private String url;
+    private boolean isTextFileReady=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +48,7 @@ public class ScanResult extends AppCompatActivity {
 
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        nutroBudDB = database.getReference().child("imgPostStatus");
+        imgScanStatus = database.getReference().child("imgScanStatus");
 
         loadFile();
     }
@@ -50,8 +59,28 @@ public class ScanResult extends AppCompatActivity {
         .addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                String url = uri.toString();
-                downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+                url = uri.toString();
+
+                imgScanStatus.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
+                        HashMap desiredScanStatus= new HashMap();
+
+                        desiredScanStatus.put("isFinishedScanning", true);//make this more elegant - sahajamatya 09/14
+                        if(scanStatus.equals(desiredScanStatus)){
+                            downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                if(isTextFileReady){
+//                    downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+                }
             }
         });
     }
