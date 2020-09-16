@@ -56,33 +56,26 @@ public class ScanResult extends AppCompatActivity {
     public void loadFile(){
         ref = storageReference.child("scanFiles/scan.txt");
         ref.getDownloadUrl()
-        .addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                url = uri.toString();
-
-                imgScanStatus.addValueEventListener(new ValueEventListener() {
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
-                        HashMap desiredScanStatus= new HashMap();
+                    public void onSuccess(Uri uri) {
+                        url = uri.toString();
 
-                        desiredScanStatus.put("isFinishedScanning", true);//make this more elegant - sahajamatya 09/14
-                        if(scanStatus.equals(desiredScanStatus)){
-                            downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
-                        }
-                    }
+                        imgScanStatus.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
+                                if(scanStatus.get("isFinishedScanning").equals(true)){
+                                    downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            }
+                        });
                     }
                 });
-                if(isTextFileReady){
-//                    downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
-                }
-            }
-        });
     }
 
     public void downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url){
