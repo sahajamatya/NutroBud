@@ -67,6 +67,7 @@ public class ScanResult extends AppCompatActivity {
                                 Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
                                 if(scanStatus.get("isFinishedScanning").equals(true)){
                                     downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+//                                    imgScanStatus.removeEventListener(this);
                                 }
                             }
                             @Override
