@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "421205280940",
+    "firebase_url": "https://nutrobud.firebaseio.com",
+    "project_id": "nutrobud",
+    "storage_bucket": "nutrobud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421205280940:android:85866e1da8d0e99277f709",
+        "android_client_info": {
+          "package_name": "com.example.nutrobud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421205280940-6na8pvnnj3n4kqac7db41c5m6056hd3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nutrobud",
+            "certificate_hash": "49514852731cf611bf7fa92fcbc7ce09be867969"
+          }
+        },
+        {
+          "client_id": "421205280940-hqeihvf20vub6ln6itanovrbecrfvvcv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSMK044N0N2MZ_oZiYghFPSOHF4Dh2T2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421205280940-hqeihvf20vub6ln6itanovrbecrfvvcv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
