@@ -8,7 +8,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_home">NutroBud</string>
+    <string name="menu_account">Account</string>
+    <string name="menu_blacklist">Blacklist</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_contact">Contact NutroBud</string>
 </resources>

@@ -5,24 +5,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/dashboard"
             android:title="Dashboard" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_account"
+            android:icon="@drawable/account"
             android:title="Account" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/nav_blacklist"
+            android:icon="@drawable/medical"
             android:title="Allergen/Ingredient Blacklist" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/settings"
             android:title="Settings" />
         <item
             android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/contact"
             android:title="Contact NutroBud" />
     </group>
 </menu>

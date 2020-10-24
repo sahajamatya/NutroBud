@@ -54,7 +54,7 @@ public class ScanResult extends AppCompatActivity {
     }
 
     public void loadFile(){
-        ref = storageReference.child("scanFiles/scan.txt");
+        ref = storageReference.child("scanFiles/scan_pic.txt");
         ref.getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -66,7 +66,7 @@ public class ScanResult extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Map<String, Object> scanStatus = (Map<String, Object>) dataSnapshot.getValue();
                                 if(scanStatus.get("isFinishedScanning").equals(true)){
-                                    downloadFile(ScanResult.this, "scan", ".txt", DIRECTORY_DOWNLOADS, url);
+                                    downloadFile(ScanResult.this, "scan_pic", ".txt", DIRECTORY_DOWNLOADS, url);
 //                                    imgScanStatus.removeEventListener(this);
                                 }
                             }
