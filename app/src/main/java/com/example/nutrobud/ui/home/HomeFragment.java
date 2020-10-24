@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,11 +23,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.nutrobud.DashActivity;
-import com.example.nutrobud.Dashboard;
 import com.example.nutrobud.R;
 import com.example.nutrobud.ScanResult;
-import com.example.nutrobud.ui.gallery.GalleryViewModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -55,6 +50,8 @@ public class HomeFragment extends Fragment {
     private StorageReference storageReference;
     private DatabaseReference imgPostStatus;
     private HomeViewModel homeViewModel;
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -74,15 +71,14 @@ public class HomeFragment extends Fragment {
         //Firebase Storage Initializations
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
 
-
         return root;
     }
 
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         scanBtn = (Button) getView().findViewById(R.id.scanBtn);
         imageView = (ImageView) getView().findViewById(R.id.imageView);

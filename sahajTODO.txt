@@ -1,17 +1,7 @@
-1. Create com.example.nutrobud.ui directories and content for:
-	a. Settings (Fragment+ ViewModel)
-	b. Contact Us (Fragment + ViewModel)
-
-2. Update drawable icons. 
-
-3. Update id's inside res/menu/activity_main_drawer.xml for all items accordingly.
-
-4. Clean up legacy code:
+* Clean up legacy code:
 	a. com.example.nutrobud.Dashboard.java
 	b. res/layout/activity_main.xml
 
-5. Fix camera dispatch function. 
+* Fix camera dispatch function. 
 
-6. Update top bar color, title. 
-
-7. Make ContactUs.java
+* Alter click behaviour for navMen items with indexNum > 3

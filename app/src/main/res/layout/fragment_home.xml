@@ -12,6 +12,8 @@
         android:id="@+id/todayBtn"
         android:layout_width="146dp"
         android:layout_height="145dp"
+        android:drawableTop="@drawable/today_pic"
+        android:paddingTop="10dp"
         android:background="#FFFFFF"
         android:text="Today"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,6 +27,8 @@
         android:id="@+id/scanBtn"
         android:layout_width="146dp"
         android:layout_height="145dp"
+        android:drawableTop="@drawable/scan_pic"
+        android:paddingTop="10dp"
         android:background="#FFFFFF"
         android:text="Scan"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,11 +40,13 @@
 
     <Button
         android:id="@+id/calendarBtn"
-        android:layout_width="171dp"
-        android:layout_height="112dp"
+        android:layout_width="146dp"
+        android:layout_height="145dp"
         android:layout_marginStart="44dp"
+        android:drawableTop="@drawable/calendar_pic"
+        android:paddingTop="15dp"
         android:background="#FFFFFF"
-        android:text="View Your Calendar"
+        android:text="Calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/todayBtn"
@@ -48,28 +54,33 @@
 
     <Button
         android:id="@+id/goalsBtn"
-        android:layout_width="128dp"
-        android:layout_height="113dp"
+        android:layout_width="146dp"
+        android:layout_height="145dp"
+        android:drawableTop="@drawable/goal_pic"
+        android:paddingTop="20dp"
         android:background="#FFFFFF"
         android:text="Goals"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.235"
+        app:layout_constraintHorizontal_bias="0.306"
         app:layout_constraintStart_toEndOf="@+id/calendarBtn"
         app:layout_constraintTop_toBottomOf="@+id/scanBtn"
-        app:layout_constraintVertical_bias="0.072" />
+        app:layout_constraintVertical_bias="0.073" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="319dp"
-        android:layout_height="172dp"
+        android:layout_width="315dp"
+        android:layout_height="173dp"
         android:background="#FFFFFF"
+        android:drawableTop="@drawable/statistics_pic"
+        android:paddingTop="20dp"
         android:text="Statistics"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarBtn"
-        app:layout_constraintVertical_bias="0.207" />
+        app:layout_constraintVertical_bias="0.28" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
