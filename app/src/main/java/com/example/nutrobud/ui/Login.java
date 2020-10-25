@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.Dashboard;
 import com.example.nutrobud.R;
 
@@ -51,7 +52,7 @@ public class Login extends AppCompatActivity {
 
                 if(Email.equals("NurtroBud") && Password.equals("123456")) {
                     Toast.makeText(Login.this,"Log in Successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    startActivity(new Intent(getApplicationContext(), DashActivity.class));
                 }
                 else{
                     Toast.makeText(Login.this,"Your email or password is incorrect", Toast.LENGTH_SHORT).show();
