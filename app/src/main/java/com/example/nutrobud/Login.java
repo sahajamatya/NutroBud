@@ -49,19 +49,20 @@ public class Login extends AppCompatActivity {
 
                 //Connect Firebase Authenicator here to check the email and password using .getText()
                 //Hardcoding until then to prove working...
-		if(Email.equals("NurtroBud") && Password.equals("123456")) {
-                    Toast.makeText(Login.this,"Log in Successful!", Toast.LENGTH_SHORT).show();
+                if (Email.equals("NurtroBud") && Password.equals("123456")) {
+                    Toast.makeText(Login.this, "Log in Successful!", Toast.LENGTH_SHORT).show();
 
                     startActivity(new Intent(getApplicationContext(), Dashboard.class));
 
-                if (Email.equals("NutroBud") && Password.equals("123456")) {
-                    Toast.makeText(Login.this, "Log in Successful!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), DashActivity.class));
-                } else {
-                    Toast.makeText(Login.this, "Your email or password is incorrect", Toast.LENGTH_SHORT).show();
+                    if (Email.equals("NutroBud") && Password.equals("123456")) {
+                        Toast.makeText(Login.this, "Log in Successful!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                    } else {
+                        Toast.makeText(Login.this, "Your email or password is incorrect", Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                        startActivity(new Intent(getApplicationContext(), DashActivity.class));
 
+                    }
                 }
             }
         });
