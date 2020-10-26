@@ -1,16 +1,16 @@
-package com.example.nutrobud.ui.slideshow;
+package com.example.nutrobud.ui.contact;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ContactViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ContactViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is ALLERGEN/INGREDIENT fragment");
+        mText.setValue("This is the contact us fragment");
+
     }
 
     public LiveData<String> getText() {
