@@ -1,0 +1,5 @@
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+pip3 install opencv-python-headless
+pip3 install pytesseract
+pip3 install pyrebase
