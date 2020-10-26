@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-229298908/SE_OCR2020-nutroBud.iml" filepath="$PROJECT_DIR$/.idea/modules/-229298908/SE_OCR2020-nutroBud.iml" group="nutroBud" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app.iml" group="nutroBud/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-229298908/nutroBud.iml" filepath="$PROJECT_DIR$/.idea/modules/-229298908/nutroBud.iml" group="nutroBud" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nutroBud-app.iml" filepath="$PROJECT_DIR$/.idea/modules/nutroBud-app.iml" group="nutroBud/app" />
     </modules>
   </component>
 </project>

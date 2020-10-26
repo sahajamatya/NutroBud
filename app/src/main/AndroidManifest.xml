@@ -16,7 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.Login">
+        <activity android:name=".SignUpGoals"></activity>
+        <activity android:name=".SignUp2" />
+        <activity android:name=".SignUp1" />
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScanResult" />
-        <activity android:name=".Dashboard"></activity>
+        <activity android:name=".Dashboard" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -45,6 +48,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
