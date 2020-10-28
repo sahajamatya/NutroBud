@@ -23,14 +23,14 @@
         app:layout_constraintVertical_bias="0.012" />
 
     <TextView
-        android:id="@+id/text_contact2"
+        android:id="@+id/text_contactEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="support@nutrobud.com"
         android:textSize="20sp"
+        android:textColorLink="#0064a7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.659"
@@ -46,7 +46,7 @@
         android:text="Call us:"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_contact4"
+        app:layout_constraintEnd_toStartOf="@+id/text_contactPhone2"
         app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_contact"
@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toEndOf="@+id/text_contact8"
-        app:layout_constraintTop_toBottomOf="@+id/text_contact5"
+        app:layout_constraintTop_toBottomOf="@+id/text_contactPhone1"
         app:layout_constraintVertical_bias="0.044" />
 
     <TextView
@@ -90,21 +90,21 @@
         android:text="Email us:"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_contact2"
+        app:layout_constraintEnd_toStartOf="@+id/text_contactEmail"
         app:layout_constraintHorizontal_bias="0.205"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.278" />
 
     <TextView
-        android:id="@+id/text_contact5"
+        android:id="@+id/text_contactPhone1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="(817)272-4127"
         android:textSize="20sp"
+        android:textColorLink="#0064a7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.459"
@@ -113,17 +113,17 @@
         app:layout_constraintVertical_bias="0.397" />
 
     <TextView
-        android:id="@+id/text_contact4"
+        android:id="@+id/text_contactPhone2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="(817)272-7066"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_contact5"
+        android:textColorLink="#0064a7"
+        app:layout_constraintBottom_toTopOf="@+id/text_contactPhone1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_contact2"
+        app:layout_constraintTop_toBottomOf="@+id/text_contactEmail"
         app:layout_constraintVertical_bias="0.586" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
