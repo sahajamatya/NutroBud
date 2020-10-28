@@ -31,6 +31,8 @@ public class SignUp1 extends AppCompatActivity {
         nextbtn = findViewById(R.id.NextBtn);
         backbtn = findViewById(R.id.BackBtn);
 
+        //use .setHint once User class is made to store name input for user is back btn is used
+
         nextbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -38,7 +40,22 @@ public class SignUp1 extends AppCompatActivity {
                 String FirstName = name_first.getText().toString().trim();
                 String LastName = name_last.getText().toString().trim();
                 String Age_s = age.getText().toString().trim();
-                int Age = Integer.parseInt(Age_s);
+
+                if (TextUtils.isEmpty(FirstName)) {
+                    name_first.setError("Email is required");
+                    return;
+                }
+                if (TextUtils.isEmpty(LastName)) {
+                    name_last.setError("Email is required");
+                    return;
+                }
+                if (TextUtils.isEmpty(Age_s)) {
+                    age.setError("Email is required");
+                    return;
+                }
+                else {
+                    int Age = Integer.parseInt(Age_s);
+                }
 
                 startActivity(new Intent(getApplicationContext(), SignUp2.class));
             }
