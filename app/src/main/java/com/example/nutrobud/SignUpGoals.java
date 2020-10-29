@@ -1,9 +1,9 @@
 package com.example.nutrobud;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -24,10 +24,10 @@ import java.util.ArrayList;
 
 public class SignUpGoals extends AppCompatActivity {
 
-    EditText goaltext;
+    EditText goaltext, daily_cal_text;
     TextView nvview;
     LinearLayout linlayout;
-    Button savebtn, cancelbtn;
+    Button savebtn, cancelbtn, reviewbtn, backbtn;
     PopupWindow goalPopUp;
 
     ListView nutrientview;
@@ -38,6 +38,9 @@ public class SignUpGoals extends AppCompatActivity {
 
         nutrientview = findViewById(R.id.NutrientView);
         linlayout = findViewById(R.id.LinearLayout);
+        daily_cal_text = findViewById(R.id.Daily_Cal_Text);
+        reviewbtn = findViewById(R.id.ReviewBtn);
+        backbtn = findViewById(R.id.BackBtn);
 
         //This will be from user. Hard coded for now to show usability
         final ArrayList<String> ingredient_yes = new ArrayList<>();
@@ -126,6 +129,28 @@ public class SignUpGoals extends AppCompatActivity {
                         goalPopUp.dismiss();
                     }
                 });
+            }
+        });
+
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), SignUp2.class));
+            }
+        });
+
+        reviewbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String dailyCal_s = daily_cal_text.getText().toString().trim();
+
+                if(!TextUtils.isEmpty(dailyCal_s))
+                {
+                    int dailyCal = Integer.parseInt(dailyCal_s);
+                    //Store in User at this point
+                }
+
+                startActivity(new Intent(getApplicationContext(), SignUpReview.class));
             }
         });
     }
