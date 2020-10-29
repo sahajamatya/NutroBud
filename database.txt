@@ -1,0 +1,36 @@
+nutrobud
+	imgPostStatus
+		isImageToScan: bool
+	imgScanStatus
+		isFinishedScanning: bool
+	users
+		USER_ID	
+			email
+			password
+			firstName
+			lastName
+			age
+			gender
+			weight(?)
+			ingredientsNo
+				...
+			ingredientsYes
+				<...String>
+			ingredientsYesGoalsQty
+				<...int>
+			ingredientsYesTrackedQty
+				<...int>	
+			calorieGoalsQty
+			calorieTrackedQty
+			Statistics
+				Day
+					caloriesTrackedQty
+					nutrients 
+					nutrientQty
+				Week 
+					caloriesTrackedQty
+					nutrients
+					nutrientQty
+				
+
+
