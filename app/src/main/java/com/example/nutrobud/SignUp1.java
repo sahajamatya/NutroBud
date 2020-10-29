@@ -42,15 +42,15 @@ public class SignUp1 extends AppCompatActivity {
                 String Age_s = age.getText().toString().trim();
 
                 if (TextUtils.isEmpty(FirstName)) {
-                    name_first.setError("Email is required");
+                    name_first.setError("First name is required");
                     return;
                 }
                 if (TextUtils.isEmpty(LastName)) {
-                    name_last.setError("Email is required");
+                    name_last.setError("Last name is required");
                     return;
                 }
                 if (TextUtils.isEmpty(Age_s)) {
-                    age.setError("Email is required");
+                    age.setError("Age is required");
                     return;
                 }
                 else {
