@@ -48,11 +48,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Daily_Cal"
+        app:layout_constraintTop_toBottomOf="@+id/Daily_Cal_Text"
         app:layout_constraintVertical_bias="0.01999998" />
 
     <EditText
-        android:id="@+id/Daily_Cal"
+        android:id="@+id/Daily_Cal_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -73,27 +73,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14"
-        app:layout_constraintVertical_bias="0.060000002" />
+        app:layout_constraintVertical_bias="0.060000002" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="329dp"
+            android:layout_height="531dp"
+            android:orientation="vertical"></LinearLayout>
+    </ListView>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/ReviewBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#0FA615"
+        android:fontFamily="sans-serif-black"
         android:text="Review"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NutrientView" />
 
-    <LinearLayout
-        android:id="@+id/LinearLayout"
-        android:layout_width="329dp"
-        android:layout_height="531dp"
-        android:orientation="vertical"
+    <Button
+        android:id="@+id/BackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#0FA615"
+        android:fontFamily="sans-serif-black"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ReviewBtn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/NutrientView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
