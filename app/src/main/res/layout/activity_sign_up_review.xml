@@ -26,20 +26,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#0FA615"
+        android:fontFamily="sans-serif-black"
         android:text="Okay"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView19"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.88" />
 
     <ListView
         android:id="@+id/ReviewView"
-        android:layout_width="413dp"
-        android:layout_height="498dp"
+        android:layout_width="421dp"
+        android:layout_height="349dp"
         app:layout_constraintBottom_toTopOf="@+id/OkayBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.45">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click on any item you wish to change"
+        app:layout_constraintBottom_toTopOf="@+id/ReviewView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.17000002" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scroll to see more"
+        app:layout_constraintBottom_toTopOf="@+id/ReviewView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

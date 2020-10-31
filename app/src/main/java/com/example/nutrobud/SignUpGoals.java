@@ -47,6 +47,8 @@ public class SignUpGoals extends AppCompatActivity {
         ingredient_yes.add("A");
         ingredient_yes.add("C");
         ingredient_yes.add("Iron");
+        ingredient_yes.add("B");
+        ingredient_yes.add("Protien");
 
         //This will also be from user
         final ArrayList<Integer> ing_yes_count = new ArrayList<>();
