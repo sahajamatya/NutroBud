@@ -100,7 +100,6 @@ public class SignUp2 extends AppCompatActivity {
 
                 //Checking if requested item to remove is in the array
                 for (int j = 0; j < ingredient_no.size(); j++) {
-                    boolean match = Item.equals(ingredient_no.get(j));
                     if (Item.equals(ingredient_no.get(j)))
                         ingredient_no.remove(j);
                     found = 1;
