@@ -125,7 +125,6 @@ public class HomeFragment extends Fragment {
         HashMap updatedValue = new HashMap();
         updatedValue.put("isImageToScan", true);
         imgPostStatus.updateChildren(updatedValue);
-
     }
 
     public void openScanResult(){

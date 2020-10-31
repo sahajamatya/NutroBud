@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-
-
     <Button
         android:id="@+id/todayBtn"
         android:layout_width="146dp"
@@ -24,7 +22,7 @@
         app:layout_constraintVertical_bias="0.145" />
 
     <Button
-        android:id="@+id/scanBtn"
+        android:id="@id/scanBtn"
         android:layout_width="146dp"
         android:layout_height="145dp"
         android:drawableTop="@drawable/scan_pic"
