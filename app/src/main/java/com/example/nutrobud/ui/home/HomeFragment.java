@@ -28,6 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.R;
+import com.example.nutrobud.ScanResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -130,7 +131,7 @@ public class HomeFragment extends Fragment {
                                     }
                                 });
 
-                //For debugging purposes: - sahajamatya
+                //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
             }
@@ -149,7 +150,10 @@ public class HomeFragment extends Fragment {
             System.out.println("\n-\n-------------------");
             System.out.println(blocks.get(i).getText());
         }
-        startActivity(new Intent(getApplicationContext(), DashActivity.class));
+        ScanResult scanResult = new ScanResult();
+        scanResult.setScannedText(blocks);
+        // Port ScanResult.java after compartmentalizing result - sahajamatya 11/01
+        //startActivity(new Intent(getApplicationContext(), ScanResult.class));
     }
 
     @SuppressLint("RestrictedApi")
