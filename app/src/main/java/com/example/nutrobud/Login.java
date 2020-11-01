@@ -10,12 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.nutrobud.DashActivity;
-import com.example.nutrobud.Dashboard;
-import com.example.nutrobud.R;
-
-import org.w3c.dom.Text;
-
 public class Login extends AppCompatActivity {
 
     EditText EmailText, PasswordText;
