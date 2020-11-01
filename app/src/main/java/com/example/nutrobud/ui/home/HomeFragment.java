@@ -26,9 +26,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.nutrobud.DashActivity;
+import com.example.nutrobud.CalendarActivity;
+import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
 import com.example.nutrobud.ScanResult;
+import com.example.nutrobud.StatisticsActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -49,7 +51,12 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class HomeFragment extends Fragment {
 
+    Button todayBtn;
     Button scanBtn;
+    Button calendarBtn;
+    Button statisticsBtn;
+    Button goalsBtn;
+
     ImageView imageView;
     String pathToFile;
     private Uri pictureURI;
@@ -89,16 +96,50 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        todayBtn = (Button) getView().findViewById(R.id.todayBtn);
         scanBtn = (Button) getView().findViewById(R.id.scanBtn);
+        calendarBtn = (Button) getView().findViewById(R.id.calendarBtn);
+        goalsBtn = (Button) getView().findViewById(R.id.goalsBtn);
+        statisticsBtn = (Button) getView().findViewById(R.id.statisticsBtn);
+
         imageView = (ImageView) getView().findViewById(R.id.imageView);
         if(Build.VERSION.SDK_INT >=23){
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);
         }
-
+        todayBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
+            }
+        });
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dispatchCamera();
+            }
+        });
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), CalendarActivity.class));
+            }
+        });
+
+        goalsBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), GoalsActivity.class));
+            }
+        });
+
+        statisticsBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
             }
         });
     }

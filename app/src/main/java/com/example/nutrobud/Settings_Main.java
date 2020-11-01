@@ -35,7 +35,7 @@ public class Settings_Main extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Settings_Main.this, Dashboard.class));
+                startActivity(new Intent(Settings_Main.this, DashActivity.class));
             }
         });
     }
