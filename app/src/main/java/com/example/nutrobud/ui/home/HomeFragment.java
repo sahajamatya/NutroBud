@@ -1,9 +1,11 @@
 package com.example.nutrobud.ui.home;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,20 +26,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.R;
-import com.example.nutrobud.ScanResult;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class HomeFragment extends Fragment {
 
@@ -94,42 +102,59 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void onClick(View v){
-        dispatchCamera();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == 1){
                 Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
-                imageView.setImageBitmap(bitmap);
-                uploadPicture();
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                InputImage image = InputImage.fromBitmap(rotatedBitmap, 0);
+                TextRecognizer recognizer = TextRecognition.getClient();
+                recognizer.process(image)
+                        .addOnSuccessListener(
+                                new OnSuccessListener<Text>() {
+                                    @Override
+                                    public void onSuccess(Text texts) {
+                                        processTextRecognitionResult(texts);
+                                    }
+                                })
+                        .addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Task failed with an exception
+                                        e.printStackTrace();
+                                    }
+                                });
+
+                //For debugging purposes: - sahajamatya
+                System.out.println("This is the bitmap reference: "+bitmap);
+                System.out.println("This is the path to file: "+pathToFile);
             }
         }
     }
 
-    private void uploadPicture() {
-        StorageReference Ref = storageReference.child("image.jpg");
-        Ref.putFile(pictureURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                updateDatabase();
-                openScanResult();
-            }
-        });
+    @SuppressLint("RestrictedApi")
+    private void processTextRecognitionResult(Text texts) {
+        List<Text.TextBlock> blocks = texts.getTextBlocks();
+        if (blocks.size() == 0) {
+            showToast("No text found");
+            System.out.println("No text found");
+            return;
+        }
+        for (int i = 0; i < blocks.size(); i++) {
+            System.out.println("\n-\n-------------------");
+            System.out.println(blocks.get(i).getText());
+        }
+        startActivity(new Intent(getApplicationContext(), DashActivity.class));
     }
 
-    public void updateDatabase() {
-        HashMap updatedValue = new HashMap();
-        updatedValue.put("isImageToScan", true);
-        imgPostStatus.updateChildren(updatedValue);
-    }
-
-    public void openScanResult(){
-        Intent intent = new Intent(getActivity(), com.example.nutrobud.ScanResult.class);
-        startActivity(intent);
+    @SuppressLint("RestrictedApi")
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void dispatchCamera() {
