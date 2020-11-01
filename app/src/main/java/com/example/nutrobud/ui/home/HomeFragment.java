@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void openScanResult(){
-        Intent intent = new Intent(getActivity(), ScanResult.class);
+        Intent intent = new Intent(getActivity(), com.example.nutrobud.ScanResult.class);
         startActivity(intent);
     }
 
