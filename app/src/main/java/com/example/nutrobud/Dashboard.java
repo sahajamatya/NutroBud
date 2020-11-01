@@ -61,9 +61,7 @@ public class Dashboard extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
 
-
-
-        scanBtn = findViewById(R.id.scanBtn);
+        scanBtn = findViewById(R.id.scanBtnl);
         imageView = findViewById(R.id.imageView);
         if(Build.VERSION.SDK_INT >=23){
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},2);

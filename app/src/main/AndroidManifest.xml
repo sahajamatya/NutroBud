@@ -34,7 +34,13 @@
             android:label="@string/title_activity_dash"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ScanResult" />
-        <activity android:name=".Dashboard" />
+        <activity android:name=".Dashboard">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
