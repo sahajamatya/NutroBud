@@ -8,12 +8,16 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpLoginInfo"></activity>
+        <activity android:name=".Settings_EditAllergen"></activity>
+        <activity android:name=".Settings_EditProfile" />
+        <activity android:name=".Settings_Main" />
+        <activity android:name=".SignUpLoginInfo" />
         <activity android:name=".SignUpReview" />
         <activity android:name=".SignUpGoals" />
         <activity android:name=".SignUp2" />
@@ -28,8 +32,7 @@
         <activity
             android:name=".DashActivity"
             android:label="@string/title_activity_dash"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ScanResult" />
         <activity android:name=".Dashboard" />
 
@@ -42,6 +45,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr" />
