@@ -1,7 +1,0 @@
-* Clean up legacy code:
-	a. com.example.nutrobud.Dashboard.java
-	b. res/layout/activity_main.xml
-
-* Fix camera dispatch function. 
-
-* Alter click behaviour for navMen items with indexNum > 3
