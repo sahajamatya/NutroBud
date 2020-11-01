@@ -35,6 +35,9 @@
         <activity
             android:name=".DashActivity"
             android:label="@string/title_activity_dash"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ScanResult" />
+        <activity android:name=".Dashboard" />
             android:theme="@style/AppTheme.NoActionBar">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -59,6 +62,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".Calendar_MainActivity" />
+        <activity android:name=".CalendarActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.nutrobud;
 
+import android.content.Intent;
 import android.Manifest;
 import android.app.ActionBar;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.example.nutrobud.ui.home.HomeFragment;
@@ -39,6 +41,7 @@ import java.io.IOException;
 public class DashActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
