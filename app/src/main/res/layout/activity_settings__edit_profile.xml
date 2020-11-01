@@ -7,49 +7,60 @@
     tools:context=".Settings_EditProfile">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Last Name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/editFirstName"
+        app:layout_constraintTop_toBottomOf="@+id/editFirstName" />
+
+    <EditText
+        android:id="@+id/editFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:hint="First Name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="Age"
         android:inputType="none|number"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintStart_toStartOf="@+id/editLastName"
+        app:layout_constraintTop_toBottomOf="@+id/editLastName" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/editWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="Weight"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintStart_toStartOf="@+id/editAge"
+        app:layout_constraintTop_toBottomOf="@+id/editAge" />
 
     <Button
         android:id="@+id/submitBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginTop="180dp"
         android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editWeight" />
 
     <Button
         android:id="@+id/back2SettingBtn"
@@ -59,5 +70,6 @@
         android:text="cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
