@@ -1,6 +1,7 @@
 package com.example.nutrobud;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
@@ -54,7 +56,17 @@ public class DashActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_settings:
+                startActivity(new Intent(getApplicationContext(), Settings_Main.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
