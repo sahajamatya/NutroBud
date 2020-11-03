@@ -44,18 +44,38 @@ import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment<i> extends Fragment {
 
     Button todayBtn;
     Button scanBtn;
     Button calendarBtn;
     Button statisticsBtn;
     Button goalsBtn;
+
+    boolean caloriesScanStatus = false;
+    boolean sodiumScanStatus = false;
+    boolean proteinScanStatus = false;
+    boolean carbsScanStatus = false;
+    boolean fatScanStatus = false;
+
+    boolean[] scanStatus = new boolean[]{false, false, false, false, false};
+    String[] allergens = {"citric acid", "folic acid"};
+    String[] nutrients = {"calories","sodium","protein","carbs","fat"};
+
+    String memo ="";
+    enum status {
+        CALORIES,
+        SODIUM,
+        PROTEIN,
+        CARBS,
+        FAT
+    }
 
     ImageView imageView;
     String pathToFile;
@@ -90,7 +110,6 @@ public class HomeFragment extends Fragment {
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
-
         return root;
     }
 
@@ -187,14 +206,91 @@ public class HomeFragment extends Fragment {
             System.out.println("No text found");
             return;
         }
+        String calories;
+        boolean caloriesFound = false;
         for (int i = 0; i < blocks.size(); i++) {
-            System.out.println("\n-\n-------------------");
-            System.out.println(blocks.get(i).getText());
+            String textBlock = blocks.get(i).getText();
+            searchHelper(textBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
         }
         ScanResult scanResult = new ScanResult();
         scanResult.setScannedText(blocks);
         // Port ScanResult.java after compartmentalizing result - sahajamatya 11/01
         //startActivity(new Intent(getApplicationContext(), ScanResult.class));
+    }
+
+    public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
+//        int i = 0;
+//        for(String searchParam: nutrients){
+//            searchNutrients(textBlock, searchParam, scanStatus[i]);
+//            i++;
+//        }
+        searchNutrients(textBlock, calories, caloriesScanStatus);
+        searchNutrients(textBlock, sodium, sodiumScanStatus);
+        searchNutrients(textBlock, protein, proteinScanStatus);
+        searchNutrients(textBlock, carbs, carbsScanStatus);
+        searchNutrients(textBlock, fat, fatScanStatus);
+
+        searchAllergens(textBlock);
+    }
+
+    public void searchAllergens(String textBlock){
+        for(String s: allergens){
+            if(textBlock.toLowerCase().contains(s) && !memo.contains(s)){
+                System.out.println("ALLERGEN DETECTED: "+ s.toUpperCase());
+                memo+=s+',';
+            }
+        }
+    }
+
+    public void searchNutrients(String textBlock, String entityToSearch, boolean scanStatus){
+        String entityQty;
+        if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
+            return;
+        }
+
+        if(textBlock.toLowerCase().contains((entityToSearch)) && !scanStatus){
+            entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
+            System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+//            for(boolean val: scanStatus){
+//
+//            }
+            if(entityToSearch.equalsIgnoreCase("calories")){
+                caloriesScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("sodium")){
+                sodiumScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("protein")){
+                proteinScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("carbohydrate")){
+                carbsScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("fat")){
+                fatScanStatus = true;
+            }
+        }
+    }
+
+    public String extractNumerals(String textBlock){
+        String numeral="";
+        int count=0;
+        for(int i=0;i<textBlock.length();i++){
+            if(isNumeric(String.valueOf(textBlock.charAt(i)))){
+                numeral+=String.valueOf(textBlock.charAt(i));
+                count++;
+            } else {
+                if(count>0){
+                    return numeral;
+                }
+            }
+        }
+        return numeral;
+    }
+
+    public boolean isNumeric(String toTest){
+        if(android.text.TextUtils.isDigitsOnly(toTest)){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @SuppressLint("RestrictedApi")
