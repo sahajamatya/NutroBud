@@ -5,32 +5,29 @@ nutrobud
 		isFinishedScanning: bool
 	users
 		USER_ID	
-			email
-			password
-			firstName
-			lastName
-			age
-			gender
-			weight(?)
+			email: String
+			password: String
+			firstName: String
+			lastName: String
+			age: int
+			gender: String
+			weight(?): String
 			ingredientsNo
-				...
+				String[]	
 			ingredientsYes
-				<...String>
+				String[]	
 			ingredientsYesGoalsQty
-				<...int>
+				int[]	
 			ingredientsYesTrackedQty
-				<...int>	
-			calorieGoalsQty
-			calorieTrackedQty
-			Statistics
-				Day
-					caloriesTrackedQty
-					nutrients 
-					nutrientQty
-				Week 
-					caloriesTrackedQty
-					nutrients
-					nutrientQty
+				int[]	
+			calorieGoalsQty: int
+			calorieTrackedQty: int
+			stats:
+				YYYYMMDD: String	
+					caloriesTrackedQty: String
+					nutrients:
+						carbohydrates: int
+						protein: int
 				
 
 
