@@ -44,7 +44,9 @@ import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -58,11 +60,17 @@ public class HomeFragment<i> extends Fragment {
     Button statisticsBtn;
     Button goalsBtn;
 
+
+
+
     boolean caloriesScanStatus = false;
     boolean sodiumScanStatus = false;
     boolean proteinScanStatus = false;
     boolean carbsScanStatus = false;
     boolean fatScanStatus = false;
+
+    private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
 
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
@@ -85,6 +93,7 @@ public class HomeFragment<i> extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private DatabaseReference imgPostStatus;
+
     private HomeViewModel homeViewModel;
 
     @Override
@@ -210,25 +219,30 @@ public class HomeFragment<i> extends Fragment {
         boolean caloriesFound = false;
         for (int i = 0; i < blocks.size(); i++) {
             String textBlock = blocks.get(i).getText();
-            searchHelper(textBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
+            String nextBlock="";
+            if(i<blocks.size()-1){
+                nextBlock = blocks.get(i+1).getText();
+            }
+            searchHelper(textBlock, nextBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
         }
+
         ScanResult scanResult = new ScanResult();
         scanResult.setScannedText(blocks);
         // Port ScanResult.java after compartmentalizing result - sahajamatya 11/01
         //startActivity(new Intent(getApplicationContext(), ScanResult.class));
     }
 
-    public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
+    public void searchHelper(String textBlock, String nextBlock, String calories, String sodium, String protein, String carbs, String fat){
 //        int i = 0;
 //        for(String searchParam: nutrients){
 //            searchNutrients(textBlock, searchParam, scanStatus[i]);
 //            i++;
 //        }
-        searchNutrients(textBlock, calories, caloriesScanStatus);
-        searchNutrients(textBlock, sodium, sodiumScanStatus);
-        searchNutrients(textBlock, protein, proteinScanStatus);
-        searchNutrients(textBlock, carbs, carbsScanStatus);
-        searchNutrients(textBlock, fat, fatScanStatus);
+        searchNutrients(textBlock, nextBlock, calories, caloriesScanStatus);
+        searchNutrients(textBlock, nextBlock, sodium, sodiumScanStatus);
+        searchNutrients(textBlock, nextBlock, protein, proteinScanStatus);
+        searchNutrients(textBlock, nextBlock, carbs, carbsScanStatus);
+        searchNutrients(textBlock, nextBlock, fat, fatScanStatus);
 
         searchAllergens(textBlock);
     }
@@ -242,7 +256,7 @@ public class HomeFragment<i> extends Fragment {
         }
     }
 
-    public void searchNutrients(String textBlock, String entityToSearch, boolean scanStatus){
+    public void searchNutrients(String textBlock, String nextBlock, String entityToSearch, boolean scanStatus){
         String entityQty;
         if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
             return;
@@ -250,19 +264,33 @@ public class HomeFragment<i> extends Fragment {
 
         if(textBlock.toLowerCase().contains((entityToSearch)) && !scanStatus){
             entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
+//            if(entityQty.equals("")){
+//                entityQty = extractNumerals(nextBlock.toLowerCase().substring(nextBlock.toLowerCase().indexOf(entityToSearch)));
+//            }
             System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            String todayDate = formatter.format(new Date());
+            if(entityQty.equals("")){
+                entityQty="0";
+            }
+            int entityQtyNum = Integer.parseInt(entityQty);
 //            for(boolean val: scanStatus){
 //
 //            }
             if(entityToSearch.equalsIgnoreCase("calories")){
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(entityQtyNum);
                 caloriesScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("sodium")){
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("sodium").setValue(entityQtyNum);
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("protein")){
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("protein").setValue(entityQtyNum);
                 proteinScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate")){
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("carbohydrates").setValue(entityQtyNum);
                 carbsScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("fat")){
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("fat").setValue(entityQtyNum);
                 fatScanStatus = true;
             }
         }
