@@ -33,8 +33,11 @@ import com.example.nutrobud.ScanResult;
 import com.example.nutrobud.StatisticsActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.mlkit.vision.common.InputImage;
@@ -59,9 +62,6 @@ public class HomeFragment<i> extends Fragment {
     Button calendarBtn;
     Button statisticsBtn;
     Button goalsBtn;
-
-
-
 
     boolean caloriesScanStatus = false;
     boolean sodiumScanStatus = false;
@@ -203,6 +203,22 @@ public class HomeFragment<i> extends Fragment {
                 //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
+                final List<User> userList = new ArrayList<>();
+                db.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            User user = snapshot.getValue(User.class);
+                            userList.add(user);
+                            //find way to get stats working
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         }
     }
@@ -277,6 +293,7 @@ public class HomeFragment<i> extends Fragment {
 //            for(boolean val: scanStatus){
 //
 //            }
+
             if(entityToSearch.equalsIgnoreCase("calories")){
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(entityQtyNum);
                 caloriesScanStatus = true;
