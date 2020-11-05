@@ -4,24 +4,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Stats {
-    private int caloriesTracked;
+    private int caloriesTrackedQty;
     private HashMap<String, Integer> nutrients;
 
     public Stats(){
 
     }
 
-    public Stats(int caloriesTracked, HashMap<String, Integer> nutrients) {
-        this.caloriesTracked = caloriesTracked;
+    public Stats(int caloriesTrackedQty, HashMap<String, Integer> nutrients) {
+        this.caloriesTrackedQty = caloriesTrackedQty;
         this.nutrients = nutrients;
     }
 
-    public int getCaloriesTracked() {
-        return caloriesTracked;
+    public int getCaloriesTrackedQty() {
+        return caloriesTrackedQty;
     }
 
-    public void setCaloriesTracked(int caloriesTracked) {
-        this.caloriesTracked = caloriesTracked;
+    public void setCaloriesTrackedQty(int caloriesTrackedQty) {
+        this.caloriesTrackedQty = caloriesTrackedQty;
     }
 
     public HashMap<String, Integer> getNutrients() {

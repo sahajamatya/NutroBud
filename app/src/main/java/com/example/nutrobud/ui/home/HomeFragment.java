@@ -213,7 +213,6 @@ public class HomeFragment<i> extends Fragment {
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                             User user = snapshot.getValue(User.class);
                             userList.add(user);
-                            //find way to get stats working
                         }
                     }
 
@@ -283,9 +282,6 @@ public class HomeFragment<i> extends Fragment {
 
         if(textBlock.toLowerCase().contains((entityToSearch)) && !scanStatus){
             entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
-//            if(entityQty.equals("")){
-//                entityQty = extractNumerals(nextBlock.toLowerCase().substring(nextBlock.toLowerCase().indexOf(entityToSearch)));
-//            }
             System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String todayDate = formatter.format(new Date());
@@ -293,31 +289,26 @@ public class HomeFragment<i> extends Fragment {
                 entityQty="0";
             }
             int entityQtyNum = Integer.parseInt(entityQty);
-//            for(boolean val: scanStatus){
-//
-//            }
+
             User demoUser = userList.get(0);
             Map<String, Stats> demoUserStatsMap = demoUser.getStats();
             Stats demoUserStats = demoUserStatsMap.get(todayDate);
-            for(String s: demoUserStatsMap.keySet()){
-                Stats ss = demoUserStatsMap.get(s);
-                System.out.println("The calories tracked for "+s+" are: "+ss.getCaloriesTracked());
-            }
-            System.out.println("This is the value that was returned: "+demoUserStats.getCaloriesTracked());
+            Map<String, Integer> nutrientsMap = demoUserStats.getNutrients();
+
             if(entityToSearch.equalsIgnoreCase("calories")){
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(entityQtyNum);
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(demoUserStats.getCaloriesTrackedQty()+entityQtyNum);
                 caloriesScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("sodium")){
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("sodium").setValue(entityQtyNum);
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("sodium").setValue(nutrientsMap.get("sodium")+entityQtyNum);
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("protein")){
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("protein").setValue(entityQtyNum);
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("protein").setValue(nutrientsMap.get("protein")+entityQtyNum);
                 proteinScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate")){
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("carbohydrates").setValue(entityQtyNum);
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("carbohydrates").setValue(nutrientsMap.get("carbohydrates")+entityQtyNum);
                 carbsScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("fat")){
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("fat").setValue(entityQtyNum);
+                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("fat").setValue(nutrientsMap.get("fat")+entityQtyNum);
                 fatScanStatus = true;
             }
         }
