@@ -29,7 +29,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.nutrobud.CalendarActivity;
 import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
-import com.example.nutrobud.ScanResult;
 import com.example.nutrobud.StatisticsActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.mlkit.vision.common.InputImage;
@@ -72,6 +73,8 @@ public class HomeFragment<i> extends Fragment {
     boolean fatScanStatus = false;
 
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");
+
 
     private List<User> userList = new ArrayList<>();
 
@@ -122,6 +125,21 @@ public class HomeFragment<i> extends Fragment {
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
+
+        db.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+                    userList.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         return root;
     }
 
@@ -178,6 +196,11 @@ public class HomeFragment<i> extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        caloriesScanStatus = false;
+        sodiumScanStatus = false;
+        proteinScanStatus = false;
+        carbsScanStatus = false;
+        fatScanStatus = false;
         if(resultCode == RESULT_OK){
             if(requestCode == 1){
                 Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
@@ -206,21 +229,6 @@ public class HomeFragment<i> extends Fragment {
                 //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
-
-                db.child("users").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            User user = snapshot.getValue(User.class);
-                            userList.add(user);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
             }
         }
     }
@@ -235,6 +243,7 @@ public class HomeFragment<i> extends Fragment {
         }
         String calories;
         boolean caloriesFound = false;
+        memo="";
         for (int i = 0; i < blocks.size(); i++) {
             String textBlock = blocks.get(i).getText();
             String nextBlock="";
@@ -243,19 +252,9 @@ public class HomeFragment<i> extends Fragment {
             }
             searchHelper(textBlock, nextBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
         }
-
-        ScanResult scanResult = new ScanResult();
-        scanResult.setScannedText(blocks);
-        // Port ScanResult.java after compartmentalizing result - sahajamatya 11/01
-        //startActivity(new Intent(getApplicationContext(), ScanResult.class));
     }
 
     public void searchHelper(String textBlock, String nextBlock, String calories, String sodium, String protein, String carbs, String fat){
-//        int i = 0;
-//        for(String searchParam: nutrients){
-//            searchNutrients(textBlock, searchParam, scanStatus[i]);
-//            i++;
-//        }
         searchNutrients(textBlock, nextBlock, calories, caloriesScanStatus);
         searchNutrients(textBlock, nextBlock, sodium, sodiumScanStatus);
         searchNutrients(textBlock, nextBlock, protein, proteinScanStatus);
@@ -266,6 +265,7 @@ public class HomeFragment<i> extends Fragment {
     }
 
     public void searchAllergens(String textBlock){
+        //System.out.println("INSIDE FUNCTION");
         for(String s: allergens){
             if(textBlock.toLowerCase().contains(s) && !memo.contains(s)){
                 System.out.println("ALLERGEN DETECTED: "+ s.toUpperCase());
@@ -276,13 +276,14 @@ public class HomeFragment<i> extends Fragment {
 
     public void searchNutrients(String textBlock, String nextBlock, String entityToSearch, boolean scanStatus){
         String entityQty;
+
         if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
             return;
         }
 
-        if(textBlock.toLowerCase().contains((entityToSearch)) && !scanStatus){
+        if(textBlock.toLowerCase().contains((entityToSearch))){
             entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
-            System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
             String todayDate = formatter.format(new Date());
             if(entityQty.equals("")){
@@ -290,24 +291,44 @@ public class HomeFragment<i> extends Fragment {
             }
             int entityQtyNum = Integer.parseInt(entityQty);
 
+            //Firebase RTDB deployment
             User demoUser = userList.get(0);
             Map<String, Stats> demoUserStatsMap = demoUser.getStats();
             Stats demoUserStats = demoUserStatsMap.get(todayDate);
             Map<String, Integer> nutrientsMap = demoUserStats.getNutrients();
 
-            if(entityToSearch.equalsIgnoreCase("calories")){
+            //Firebase Cloud Firestore Database deployment
+            Map<String, Object> user = new HashMap<String, Object>();
+            Map<String, Stats> statsMapObj = new HashMap<String, Stats>();
+            Stats statsObj = new Stats();
+            if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
+                System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+                System.out.println("Previous amount from DB: "+demoUserStats.getCaloriesTrackedQty());
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(demoUserStats.getCaloriesTrackedQty()+entityQtyNum);
+                user.put("age", 222);
+                statsObj.setCaloriesTrackedQty(555);
+                statsMapObj.put(todayDate, statsObj);
+                user.put("stats", statsMapObj);
+                dr.update(user);
                 caloriesScanStatus = true;
-            } else if(entityToSearch.equalsIgnoreCase("sodium")){
+            } else if(entityToSearch.equalsIgnoreCase("sodium") && !sodiumScanStatus){
+                System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+                System.out.println("Previous amount from DB: "+nutrientsMap.get("sodium"));
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("sodium").setValue(nutrientsMap.get("sodium")+entityQtyNum);
                 sodiumScanStatus = true;
-            } else if(entityToSearch.equalsIgnoreCase("protein")){
+            } else if(entityToSearch.equalsIgnoreCase("protein") && !proteinScanStatus){
+                System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+                System.out.println("Previous amount from DB: "+nutrientsMap.get("protein"));
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("protein").setValue(nutrientsMap.get("protein")+entityQtyNum);
-                proteinScanStatus = true;
-            } else if(entityToSearch.equalsIgnoreCase("carbohydrate")){
+                sodiumScanStatus = true;
+            } else if(entityToSearch.equalsIgnoreCase("carbohydrate") && !carbsScanStatus){
+                System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+                System.out.println("Previous amount from DB: "+nutrientsMap.get("carbohydrates"));
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("carbohydrates").setValue(nutrientsMap.get("carbohydrates")+entityQtyNum);
                 carbsScanStatus = true;
-            } else if(entityToSearch.equalsIgnoreCase("fat")){
+            } else if(entityToSearch.equalsIgnoreCase("fat") && !fatScanStatus){
+                System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
+                System.out.println("Previous amount from DB: "+nutrientsMap.get("fat"));
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("fat").setValue(nutrientsMap.get("fat")+entityQtyNum);
                 fatScanStatus = true;
             }

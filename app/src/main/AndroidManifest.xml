@@ -14,7 +14,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ScanResult"></activity>
         <activity android:name=".Settings_EditAllergen" />
         <activity android:name=".Settings_EditProfile" />
         <activity android:name=".Settings_Main" />
