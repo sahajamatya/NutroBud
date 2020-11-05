@@ -8,12 +8,22 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.nutrobud.DashActivity;
+import com.example.nutrobud.Dashboard;
+import com.example.nutrobud.R;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 public class Login extends AppCompatActivity {
 
     EditText EmailText, PasswordText;
     Button loginbtn, signupbtn;
+    ProgressBar progressbar;
+    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,12 @@ public class Login extends AppCompatActivity {
         PasswordText = findViewById(R.id.password);
         loginbtn = findViewById(R.id.LoginBtn);
         signupbtn = findViewById(R.id.SignUpBtn);
+
+        fAuth = FirebaseAuth.getInstance();
+        progressbar = findViewById(R.id.progressBar);
+
+        if(fAuth.getCurrentUser() != null)
+            startActivity(new Intent(getApplicationContext(), DashActivity.class));
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override

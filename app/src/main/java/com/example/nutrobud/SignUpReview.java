@@ -1,14 +1,23 @@
 package com.example.nutrobud;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -16,6 +25,8 @@ public class SignUpReview extends AppCompatActivity {
 
     Button okaybtn;
     ListView reviewview;
+    FirebaseAuth fAuth;
+    ProgressBar progressbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +36,14 @@ public class SignUpReview extends AppCompatActivity {
         okaybtn = findViewById(R.id.OkayBtn);
         reviewview = findViewById(R.id.ReviewView);
 
+        fAuth = FirebaseAuth.getInstance();
+        progressbar = findViewById(R.id.progressBar);
+
         //These will be coming from User. Hard coding for now to show functionality
         String firstName = "John";
         String lastName = "Doe";
-        String email = "someone@aplace.com";
-        String password = "123456";
+        final String email = "someone@aplace.com";
+        final String password = "123456";
         int age = 32;
         char gender = 'm';
         double weight = 200.6;
@@ -159,7 +173,18 @@ public class SignUpReview extends AppCompatActivity {
         okaybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(SignUpReview.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                        }else{
+                            Toast.makeText(SignUpReview.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
     }
