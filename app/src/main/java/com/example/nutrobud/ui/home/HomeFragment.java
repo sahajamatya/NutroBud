@@ -50,7 +50,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
@@ -71,6 +73,7 @@ public class HomeFragment<i> extends Fragment {
 
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
+    private List<User> userList = new ArrayList<>();
 
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
@@ -203,7 +206,7 @@ public class HomeFragment<i> extends Fragment {
                 //For debugging purposes: - sahajamatya - 11/01
                 System.out.println("This is the bitmap reference: "+bitmap);
                 System.out.println("This is the path to file: "+pathToFile);
-                final List<User> userList = new ArrayList<>();
+
                 db.child("users").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -293,7 +296,14 @@ public class HomeFragment<i> extends Fragment {
 //            for(boolean val: scanStatus){
 //
 //            }
-
+            User demoUser = userList.get(0);
+            Map<String, Stats> demoUserStatsMap = demoUser.getStats();
+            Stats demoUserStats = demoUserStatsMap.get(todayDate);
+            for(String s: demoUserStatsMap.keySet()){
+                Stats ss = demoUserStatsMap.get(s);
+                System.out.println("The calories tracked for "+s+" are: "+ss.getCaloriesTracked());
+            }
+            System.out.println("This is the value that was returned: "+demoUserStats.getCaloriesTracked());
             if(entityToSearch.equalsIgnoreCase("calories")){
                 db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(entityQtyNum);
                 caloriesScanStatus = true;
