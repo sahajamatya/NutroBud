@@ -1,0 +1,33 @@
+nutrobud
+	imgPostStatus
+		isImageToScan: bool
+	imgScanStatus
+		isFinishedScanning: bool
+	users
+		USER_ID	
+			email: String
+			password: String
+			firstName: String
+			lastName: String
+			age: int
+			gender: String
+			weight(?): String
+			ingredientsNo
+				String[]	
+			ingredientsYes
+				String[]	
+			ingredientsYesGoalsQty
+				int[]	
+			ingredientsYesTrackedQty
+				int[]	
+			calorieGoalsQty: int
+			calorieTrackedQty: int
+			stats:
+				YYYYMMDD: String	
+					caloriesTrackedQty: String
+					nutrients:
+						carbohydrates: int
+						protein: int
+				
+
+
