@@ -146,11 +146,11 @@ public class User {
         this.calorieGoalsQty = calorieGoalsQty;
     }
 
-    public int getCalorieTrackedQty() {
+    public int getcalorieTrackedQty() {
         return calorieTrackedQty;
     }
 
-    public void setCalorieTrackedQty(int calorieTrackedQty) {
+    public void setcalorieTrackedQty(int calorieTrackedQty) {
         this.calorieTrackedQty = calorieTrackedQty;
     }
 
