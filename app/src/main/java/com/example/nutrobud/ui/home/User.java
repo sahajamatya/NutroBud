@@ -1,8 +1,10 @@
 package com.example.nutrobud.ui.home;
 
 import java.util.List;
+import java.util.Map;
 
 public class User {
+    private int id;
     private String email;
     private String password;
     private String firstName;
@@ -16,13 +18,14 @@ public class User {
     private List<Integer> ingredientsYesTrackedQty;
     private int calorieGoalsQty;
     private int calorieTrackedQty;
-    private Stats stats;
+    private Map<String, Stats> stats;
 
     public User(){
 
     }
 
-    public User(String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Stats stats) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -37,6 +40,14 @@ public class User {
         this.calorieGoalsQty = calorieGoalsQty;
         this.calorieTrackedQty = calorieTrackedQty;
         this.stats = stats;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -63,11 +74,11 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getsecondName() {
+    public String getSecondName() {
         return secondName;
     }
 
-    public void setsecondName(String secondName) {
+    public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 
@@ -143,11 +154,11 @@ public class User {
         this.calorieTrackedQty = calorieTrackedQty;
     }
 
-    public Stats getStats() {
+    public Map<String, Stats> getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(Map<String, Stats> stats) {
         this.stats = stats;
     }
 }
