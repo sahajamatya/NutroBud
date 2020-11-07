@@ -38,7 +38,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.mlkit.vision.common.InputImage;
@@ -75,12 +78,22 @@ public class HomeFragment<i> extends Fragment {
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");
 
-
     private List<User> userList = new ArrayList<>();
+
+    //Firebase Cloud Firestore Gang
+    private Map<String, Object> user = new HashMap<String, Object>();
+    private Map<String, Stats> statsMapObj = new HashMap<String, Stats>();
+    private Map<String, Integer> nutrients = new HashMap<String, Integer>();
+    private Stats statsObj = new Stats();
+    private User userDBData;
+    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+
+    private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    private String todayDate = formatter.format(new Date());
 
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
-    String[] nutrients = {"calories","sodium","protein","carbs","fat"};
+    String[] nutrientsArr = {"calories","sodium","protein","carbs","fat"};
 
     String memo ="";
     enum status {
@@ -252,6 +265,26 @@ public class HomeFragment<i> extends Fragment {
             }
             searchHelper(textBlock, nextBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
         }
+
+        //Getting data from the Firestore DB
+        userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
+                if(!queryDocumentSnapshot.isEmpty()){
+                    List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+
+                    for(DocumentSnapshot d: userDBDataList){
+                        userDBData = d.toObject(User.class);
+                    }
+                }
+            }
+        });
+        //Setting data in the Firestore DB
+
+        statsObj.setNutrients(nutrients);
+        statsMapObj.put(todayDate, statsObj);
+        user.put("stats", statsMapObj);
+        dr.set(user, SetOptions.merge());
     }
 
     public void searchHelper(String textBlock, String nextBlock, String calories, String sodium, String protein, String carbs, String fat){
@@ -284,52 +317,50 @@ public class HomeFragment<i> extends Fragment {
         if(textBlock.toLowerCase().contains((entityToSearch))){
             entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-            String todayDate = formatter.format(new Date());
             if(entityQty.equals("")){
                 entityQty="0";
             }
             int entityQtyNum = Integer.parseInt(entityQty);
 
-            //Firebase RTDB deployment
-            User demoUser = userList.get(0);
-            Map<String, Stats> demoUserStatsMap = demoUser.getStats();
-            Stats demoUserStats = demoUserStatsMap.get(todayDate);
-            Map<String, Integer> nutrientsMap = demoUserStats.getNutrients();
+            //the following are values fetched from the database so that new data can be added to them
+//            System.out.println("This is the date i got: "+todayDate);
+//            int trackedCalories = userDBData.getStats().get(todayDate).getCaloriesTrackedQty();
+//            int trackedCarbohydrate = userDBData.getStats().get(todayDate).getNutrients().get("carbohydrate");
+//            int trackedProtein = userDBData.getStats().get(todayDate).getNutrients().get("carbohydrate");
+//            int trackedSodium = userDBData.getStats().get(todayDate).getNutrients().get("carbohydrate");
+//            int trackedFat = userDBData.getStats().get(todayDate).getNutrients().get("carbohydrate");
 
-            //Firebase Cloud Firestore Database deployment
-            Map<String, Object> user = new HashMap<String, Object>();
-            Map<String, Stats> statsMapObj = new HashMap<String, Stats>();
-            Stats statsObj = new Stats();
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
                 System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
-                System.out.println("Previous amount from DB: "+demoUserStats.getCaloriesTrackedQty());
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("caloriesTrackedQty").setValue(demoUserStats.getCaloriesTrackedQty()+entityQtyNum);
-                user.put("age", 222);
-                statsObj.setCaloriesTrackedQty(555);
-                statsMapObj.put(todayDate, statsObj);
-                user.put("stats", statsMapObj);
-                dr.update(user);
+                statsObj.setCaloriesTrackedQty(entityQtyNum);
                 caloriesScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("sodium") && !sodiumScanStatus){
                 System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
-                System.out.println("Previous amount from DB: "+nutrientsMap.get("sodium"));
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("sodium").setValue(nutrientsMap.get("sodium")+entityQtyNum);
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), entityQtyNum);
+                    System.out.println("Hashmap val for "+entityToSearch+": "+nutrients.get(entityToSearch.toLowerCase()));
+                }
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("protein") && !proteinScanStatus){
                 System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
-                System.out.println("Previous amount from DB: "+nutrientsMap.get("protein"));
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("protein").setValue(nutrientsMap.get("protein")+entityQtyNum);
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), entityQtyNum);
+                    System.out.println("Hashmap val for "+entityToSearch+": "+nutrients.get(entityToSearch.toLowerCase()));
+                }
                 sodiumScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate") && !carbsScanStatus){
                 System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
-                System.out.println("Previous amount from DB: "+nutrientsMap.get("carbohydrates"));
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("carbohydrates").setValue(nutrientsMap.get("carbohydrates")+entityQtyNum);
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), entityQtyNum);
+                    System.out.println("Hashmap val for "+entityToSearch+": "+nutrients.get(entityToSearch.toLowerCase()));
+                }
                 carbsScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("fat") && !fatScanStatus){
                 System.out.println("THE AMOUNT OF "+ entityToSearch +" IS: "+ entityQty);
-                System.out.println("Previous amount from DB: "+nutrientsMap.get("fat"));
-                db.child("users").child("demoUserID").child("stats").child(todayDate).child("nutrients").child("fat").setValue(nutrientsMap.get("fat")+entityQtyNum);
+                if(!nutrients.containsKey(entityToSearch.toLowerCase())){
+                    nutrients.put(entityToSearch.toLowerCase(), entityQtyNum);
+                    System.out.println("Hashmap val for "+entityToSearch+": "+nutrients.get(entityToSearch.toLowerCase()));
+                }
                 fatScanStatus = true;
             }
         }
