@@ -92,8 +92,8 @@ public class HomeFragment<i> extends Fragment {
     private List<User> userData = new ArrayList<>();
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-    private String todayDate = formatter.format(new Date());
-
+//    private String todayDate = formatter.format(new Date());
+private String todayDate = "20201106";
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
     String[] nutrientsArr = {"calories","sodium","protein","carbs","fat"};
@@ -141,21 +141,6 @@ public class HomeFragment<i> extends Fragment {
         //Firebase Realtime Database Initializations
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         imgPostStatus = database.getReference().child("imgPostStatus");
-
-        db.child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    userList.add(user);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         //Loading all data from Firestore
         userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -331,12 +316,20 @@ public class HomeFragment<i> extends Fragment {
             }
             final int entityQtyNum = Integer.parseInt(entityQty);
 
-            //the following are values fetched from the database so that new data can be added to them
-            int trackedCalories = userData.get(0).getStats().get(todayDate).getCaloriesTrackedQty();
-            int trackedCarbohydrate = userData.get(0).getStats().get(todayDate).getNutrients().get("carbohydrate");
-            int trackedProtein = userData.get(0).getStats().get(todayDate).getNutrients().get("protein");
-            int trackedSodium = userData.get(0).getStats().get(todayDate).getNutrients().get("sodium");
-            int trackedFat = userData.get(0).getStats().get(todayDate).getNutrients().get("fat");
+            int trackedCalories = 0;
+            int trackedCarbohydrate = 0;
+            int trackedProtein = 0;
+            int trackedSodium =0;
+            int trackedFat = 0;
+
+            if(userData.get(0).getStats().containsKey(todayDate)){
+                //the following are values fetched from the database so that new data can be added to them
+                trackedCalories = userData.get(0).getStats().get(todayDate).getCaloriesTrackedQty();
+                trackedCarbohydrate = userData.get(0).getStats().get(todayDate).getNutrients().get("carbohydrate");
+                trackedProtein = userData.get(0).getStats().get(todayDate).getNutrients().get("protein");
+                trackedSodium = userData.get(0).getStats().get(todayDate).getNutrients().get("sodium");
+                trackedFat = userData.get(0).getStats().get(todayDate).getNutrients().get("fat");
+            }
 
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
                 statsObj.setCaloriesTrackedQty(trackedCalories + entityQtyNum);
