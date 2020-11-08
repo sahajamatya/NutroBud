@@ -74,8 +74,6 @@ public class SignUpGoals extends AppCompatActivity {
         nutrientview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //goaltext.onEditorAction(EditorInfo.IME_ACTION_DONE);
-
                 final String Item = ingredient_yes.get(i); //Must be "final" to be accessed later
 
                 LayoutInflater layoutInflater = (LayoutInflater) SignUpGoals.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

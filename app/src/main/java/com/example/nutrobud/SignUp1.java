@@ -12,12 +12,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.nutrobud.ui.home.User;
+
 public class SignUp1 extends AppCompatActivity {
 
     RadioGroup Gender;
     RadioButton radioButton;
     EditText name_first, name_last, age;
     Button nextbtn, backbtn;
+
+    Intent i = getIntent();
+    User user = (User)i.getSerializableExtra("User");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,27 +49,31 @@ public class SignUp1 extends AppCompatActivity {
                 if (TextUtils.isEmpty(FirstName)) {
                     name_first.setError("First name is required");
                     return;
+                }else{
+                    user.setFirstName(FirstName);
                 }
                 if (TextUtils.isEmpty(LastName)) {
                     name_last.setError("Last name is required");
                     return;
+                }else{
+                    user.setsecondName(LastName);
                 }
                 if (TextUtils.isEmpty(Age_s)) {
                     age.setError("Age is required");
                     return;
                 }
                 else {
-                    int Age = Integer.parseInt(Age_s);
+                    user.setAge(Integer.parseInt(Age_s));
                 }
 
-                startActivity(new Intent(getApplicationContext(), SignUp2.class));
+                startActivity(new Intent(SignUp1.this, SignUp2.class));
             }
         });
 
         backbtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SignUpLoginInfo.class));
+                startActivity(new Intent(SignUp1.this, SignUpLoginInfo.class));
             }
         });
     }
@@ -74,15 +83,13 @@ public class SignUp1 extends AppCompatActivity {
 
         radioButton = findViewById(radioId);
 
-        char gender;
-
         //Set gender - change to save in User later
         if(radioButton.getText() == "Male") {
-            gender = 'm';
+            user.setGender("Male");
         }else if(radioButton.getText() == "Female"){
-            gender = 'f';
+            user.setGender("Female");
         }else{
-            gender = 'o';
+            user.setGender("Other");
         }
     }
 }

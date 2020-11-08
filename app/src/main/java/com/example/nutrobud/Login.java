@@ -37,8 +37,9 @@ public class Login extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         progressbar = findViewById(R.id.progressBar);
 
-        if(fAuth.getCurrentUser() != null)
-            startActivity(new Intent(getApplicationContext(), DashActivity.class));
+        //If there is already a user active, they will be automatically logged in
+        //if(fAuth.getCurrentUser() != null)
+            //startActivity(new Intent(getApplicationContext(), DashActivity.class));
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
