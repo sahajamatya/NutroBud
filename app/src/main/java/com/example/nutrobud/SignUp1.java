@@ -56,7 +56,7 @@ public class SignUp1 extends AppCompatActivity {
                     name_last.setError("Last name is required");
                     return;
                 }else{
-                    user.setsecondName(LastName);
+                    user.setSecondName(LastName);
                 }
                 if (TextUtils.isEmpty(Age_s)) {
                     age.setError("Age is required");

@@ -92,8 +92,7 @@ public class HomeFragment<i> extends Fragment {
     private List<User> userData = new ArrayList<>();
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-//    private String todayDate = formatter.format(new Date());
-private String todayDate = "20201106";
+    private String todayDate = formatter.format(new Date());
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
     String[] nutrientsArr = {"calories","sodium","protein","carbs","fat"};
@@ -143,6 +142,7 @@ private String todayDate = "20201106";
         imgPostStatus = database.getReference().child("imgPostStatus");
 
         //Loading all data from Firestore
+        //getFirestoreData
         userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
@@ -155,6 +155,7 @@ private String todayDate = "20201106";
                 }
             }
         });
+        //END: getFirestoreData
         return root;
     }
 
@@ -272,6 +273,7 @@ private String todayDate = "20201106";
         }
 
         //Setting data in the Firestore DB
+        //setFirestoreData
         user.put("stats", statsMapObj);
         dr.set(user, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -279,6 +281,7 @@ private String todayDate = "20201106";
                 startActivity(new Intent(getApplicationContext(), DashActivity.class));
             }
         });
+        //END: setFirestoreData
     }
 
     public void searchHelper(String textBlock, String nextBlock, String calories, String sodium, String protein, String carbs, String fat){
@@ -343,7 +346,7 @@ private String todayDate = "20201106";
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedProtein + entityQtyNum);
                 }
-                sodiumScanStatus = true;
+                proteinScanStatus = true;
             } else if(entityToSearch.equalsIgnoreCase("carbohydrate") && !carbsScanStatus){
                 if(!nutrients.containsKey(entityToSearch.toLowerCase())){
                     nutrients.put(entityToSearch.toLowerCase(), trackedCarbohydrate + entityQtyNum);
