@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class Stats {
     private int caloriesTrackedQty;
-    private HashMap<String, Integer> nutrients;
+    private Map<String, Integer> nutrients;
 
     public Stats(){
 
     }
 
-    public Stats(int caloriesTrackedQty, HashMap<String, Integer> nutrients) {
+    public Stats(int caloriesTrackedQty, Map<String, Integer> nutrients) {
         this.caloriesTrackedQty = caloriesTrackedQty;
         this.nutrients = nutrients;
     }
@@ -24,11 +24,11 @@ public class Stats {
         this.caloriesTrackedQty = caloriesTrackedQty;
     }
 
-    public HashMap<String, Integer> getNutrients() {
+    public Map<String, Integer> getNutrients() {
         return nutrients;
     }
 
-    public void setNutrients(HashMap<String, Integer> nutrients) {
+    public void setNutrients(Map<String, Integer> nutrients) {
         this.nutrients = nutrients;
     }
 }
