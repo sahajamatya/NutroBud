@@ -24,23 +24,16 @@
         <activity android:name=".SignUp2" />
         <activity android:name=".SignUp1" />
         <activity android:name=".Login">
-
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" />-->
-
-<!--             <category android:name="android.intent.category.LAUNCHER" />-->
-<!--             </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".DashActivity"
-            android:label="@string/title_activity_dash"
-            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".DashActivity"
+            android:label="@string/title_activity_dash"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <provider
