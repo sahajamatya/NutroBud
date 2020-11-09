@@ -31,6 +31,7 @@ import com.example.nutrobud.DashActivity;
 import com.example.nutrobud.GoalsActivity;
 import com.example.nutrobud.R;
 import com.example.nutrobud.StatisticsActivity;
+import com.example.nutrobud.ui.objectPassEx.Act1;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +70,7 @@ public class HomeFragment<i> extends Fragment {
     Button calendarBtn;
     Button statisticsBtn;
     Button goalsBtn;
+    Button secretBtn;
 
     boolean caloriesScanStatus = false;
     boolean sodiumScanStatus = false;
@@ -96,6 +98,8 @@ public class HomeFragment<i> extends Fragment {
     boolean[] scanStatus = new boolean[]{false, false, false, false, false};
     String[] allergens = {"citric acid", "folic acid"};
     String[] nutrientsArr = {"calories","sodium","protein","carbs","fat"};
+
+    private int countClicks = 0;
 
     String memo ="";
     enum status {
@@ -166,6 +170,7 @@ public class HomeFragment<i> extends Fragment {
         calendarBtn = (Button) getView().findViewById(R.id.calendarBtn);
         goalsBtn = (Button) getView().findViewById(R.id.goalsBtn);
         statisticsBtn = (Button) getView().findViewById(R.id.statisticsBtn);
+        secretBtn = (Button) getView().findViewById(R.id.secretBtn);
 
         imageView = (ImageView) getView().findViewById(R.id.imageView);
         if(Build.VERSION.SDK_INT >=23){
@@ -205,6 +210,17 @@ public class HomeFragment<i> extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
+            }
+        });
+
+        secretBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onClick(View view) {
+                countClicks++;
+                if(countClicks==5){
+                    startActivity(new Intent(getApplicationContext(), Act1.class));
+                }
             }
         });
 
