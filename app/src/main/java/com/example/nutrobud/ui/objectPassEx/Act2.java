@@ -24,7 +24,7 @@ public class Act2 extends AppCompatActivity {
         final EditText passwordTxt = findViewById(R.id.userExPassword);
         Button submitBtn = findViewById(R.id.userExBtn2);
 
-        final UserEx myUserFromAct1 = getIntent().getParcelableExtra("anyNameYouWant");
+        final UserEx myUserFromAct1 = getIntent().getParcelableExtra("anyNameYouWant");//make sure the name matches from what you set it in Act1
 
         firstNameTextView.setText("First Name from ACT I: "+myUserFromAct1.getFirstName());
         secondNameTextView.setText("Second Name from ACT II: "+myUserFromAct1.getSecondName());
