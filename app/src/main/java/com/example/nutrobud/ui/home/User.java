@@ -4,8 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.Map;
 
 public class User implements Parcelable{
+    private int id;
     private String email;
     private String password;
     private String firstName;
@@ -19,7 +21,7 @@ public class User implements Parcelable{
     private List<Integer> ingredientsYesTrackedQty;
     private int calorieGoalsQty;
     private int calorieTrackedQty;
-    private Stats stats;
+    private Map<String, Stats> stats;
 
 
     public User(){
@@ -27,7 +29,8 @@ public class User implements Parcelable{
         weight = -1;
     }
 
-    public User(String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Stats stats) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -69,6 +72,14 @@ public class User implements Parcelable{
             return new User[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -166,19 +177,19 @@ public class User implements Parcelable{
         this.calorieGoalsQty = calorieGoalsQty;
     }
 
-    public int getCalorieTrackedQty() {
+    public int getcalorieTrackedQty() {
         return calorieTrackedQty;
     }
 
-    public void setCalorieTrackedQty(int calorieTrackedQty) {
+    public void setcalorieTrackedQty(int calorieTrackedQty) {
         this.calorieTrackedQty = calorieTrackedQty;
     }
 
-    public Stats getStats() {
+    public Map<String, Stats> getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(Map<String, Stats> stats) {
         this.stats = stats;
     }
 

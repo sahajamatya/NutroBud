@@ -4,14 +4,15 @@ nutrobud
 	imgScanStatus
 		isFinishedScanning: bool
 	users
-		USER_ID	
+		USER_TOKEN
+			id: int
 			email: String
 			password: String
 			firstName: String
 			lastName: String
 			age: int
 			gender: String
-			weight(?): String
+			weight(?): int  
 			ingredientsNo
 				String[]	
 			ingredientsYes

@@ -14,8 +14,8 @@ public class Stats implements Parcelable {
 
     }
 
-    public Stats(int caloriesTracked, HashMap<String, Integer> nutrients) {
-        this.caloriesTracked = caloriesTracked;
+    public Stats(int caloriesTrackedQty, Map<String, Integer> nutrients) {
+        this.caloriesTrackedQty = caloriesTrackedQty;
         this.nutrients = nutrients;
     }
 
@@ -39,15 +39,15 @@ public class Stats implements Parcelable {
         return caloriesTracked;
     }
 
-    public void setCaloriesTracked(int caloriesTracked) {
-        this.caloriesTracked = caloriesTracked;
+    public void setCaloriesTrackedQty(int caloriesTrackedQty) {
+        this.caloriesTrackedQty = caloriesTrackedQty;
     }
 
-    public HashMap<String, Integer> getNutrients() {
+    public Map<String, Integer> getNutrients() {
         return nutrients;
     }
 
-    public void setNutrients(HashMap<String, Integer> nutrients) {
+    public void setNutrients(Map<String, Integer> nutrients) {
         this.nutrients = nutrients;
     }
 
