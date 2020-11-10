@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Stats implements Parcelable {
-    private int caloriesTracked;
+    private int caloriesTrackedQty;
     private HashMap<String, Integer> nutrients;
 
     public Stats(){
@@ -16,11 +16,11 @@ public class Stats implements Parcelable {
 
     public Stats(int caloriesTrackedQty, Map<String, Integer> nutrients) {
         this.caloriesTrackedQty = caloriesTrackedQty;
-        this.nutrients = nutrients;
+        this.nutrients = (HashMap<String, Integer>) nutrients;
     }
 
     private Stats(Parcel in) {
-        caloriesTracked = in.readInt();
+        caloriesTrackedQty = in.readInt();
     }
 
     public static final Parcelable.Creator<Stats> CREATOR = new Parcelable.Creator<Stats>() {
@@ -35,8 +35,8 @@ public class Stats implements Parcelable {
         }
     };
 
-    public int getCaloriesTracked() {
-        return caloriesTracked;
+    public int getCaloriesTrackedQty() {
+        return caloriesTrackedQty;
     }
 
     public void setCaloriesTrackedQty(int caloriesTrackedQty) {
@@ -48,7 +48,7 @@ public class Stats implements Parcelable {
     }
 
     public void setNutrients(Map<String, Integer> nutrients) {
-        this.nutrients = nutrients;
+        this.nutrients = (HashMap<String, Integer>) nutrients;
     }
 
     @Override
@@ -58,6 +58,6 @@ public class Stats implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(caloriesTracked);
+        dest.writeInt(caloriesTrackedQty);
     }
 }
