@@ -20,7 +20,7 @@ public class GoalsActivity extends AppCompatActivity {
     //nutrient progress bars
     TextView tv1,tv2;
     private ProgressBar progressBar1, progressBar2;
-    int progressStatus1=70, progressStatus2=10;
+    int progressStatus1=70, progressStatus2=10; // hardcoded for now- working on retrieving data from database
     int nutr1goal=100;
     int nutr2goal=100;
 
@@ -28,7 +28,7 @@ public class GoalsActivity extends AppCompatActivity {
     TextView ratio;
 
     //goal calorie progress
-    int currentCals=1700;
+    int currentCals=1700; // hardcoded for now- working on retrieving data from database
     int calGoals=2000;
     private Handler hdlr = new Handler ();
 
@@ -45,7 +45,6 @@ public class GoalsActivity extends AppCompatActivity {
         Resources res = getResources();
 
 
-
         titleView = (TextView) findViewById(R.id.titleView); // "goals" title
         titleView = (TextView) findViewById(R.id.calorieText); // "CALORIES" title
 
@@ -56,12 +55,12 @@ public class GoalsActivity extends AppCompatActivity {
         date = dateFormat.format(calendar.getTime());
         dateTimeDisplay.setText(date);
 
-        // progress bar for calories
+        // horizontal progress bar for calories, but in circular shape
         Drawable drawable = res.getDrawable(R.drawable.circular);
         final ProgressBar mProgress = (ProgressBar) findViewById(R.id.calProgressBar);
-        mProgress.setProgress(0); // main progress
-        mProgress.setSecondaryProgress(calGoals); // secondary progress
-        mProgress.setMax(calGoals); // maximum progress
+        mProgress.setProgress(0); // main progress starting at 0. Will correspond to database once pulled successfully
+        mProgress.setSecondaryProgress(calGoals); // secondary progress aka max progress aka calorie goals
+        mProgress.setMax(calGoals); // maximum progress aka calorie goals
         mProgress.setProgressDrawable(drawable);
 
         ratio = (TextView) findViewById(R.id.ratioView);
@@ -86,7 +85,7 @@ public class GoalsActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
+        // hardcoded progress bar for first nutrient. Will update dynamically once data pulled from firestore sucessfully
         tv1=(TextView)findViewById(R.id.pbar1ratio);
         progressBar1=findViewById(R.id.pbar1);
         new Thread(new Runnable(){
@@ -99,7 +98,7 @@ public class GoalsActivity extends AppCompatActivity {
                         public void run() {
                             progressBar1.setProgress(progressStatus1);
                             // show progress on TextView
-                            tv1.setText(" Protein: " + progressStatus1 + "/" + nutr1goal + "g");
+                            tv1.setText(" Protein: " + progressStatus1 + "/" + nutr1goal + "mg");
                         }
                     });
                     try{
@@ -111,6 +110,7 @@ public class GoalsActivity extends AppCompatActivity {
             }
         }).start();
 
+        // hardcoded progress bar for second nutrient. Will update dynamically once data pulled from firestore sucessfully
         tv2=(TextView)findViewById(R.id.pbar2ratio);
         progressBar2=findViewById(R.id.pbar2);
         new Thread(new Runnable(){
