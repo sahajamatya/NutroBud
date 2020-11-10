@@ -18,7 +18,8 @@
         <activity android:name=".ui.objectPassEx.Act3"></activity>
         <activity android:name=".ui.objectPassEx.Act2" />
         <activity android:name=".ui.objectPassEx.Act1" />
-        <activity android:name=".Settings_EditAllergen" />
+        <activity android:name=".Settings_EditAllergen"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".Settings_EditProfile" />
         <activity android:name=".Settings_Main" />
         <activity android:name=".SignUpLoginInfo" />

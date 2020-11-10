@@ -1,43 +1,63 @@
 package com.example.nutrobud;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nutrobud.R;
+import com.example.nutrobud.ui.home.User;
 
 import java.util.ArrayList;
-
+ /*
+    DISCLAIMER, CODE WRITTEN ON THIS FILE WAS PARTIALLY TAKEN FROM LYDIA SARVER
+ */
 public class Settings_EditAllergen extends AppCompatActivity {
-    ArrayList<String> ingredient_no = new ArrayList<>();
-    TextView viewno, editAllergen;
-    Button addnoBtn, rmNoBtn;
+    ArrayList<String> ingredient_no = new ArrayList<>();    //initializing variables
+    TextView  editAllergen;
+    Button addnoBtn;
+    Button[] btnArr = new Button[15];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__edit_allergen);
+        final int[] i = new int[1]; //This is to make i work for both instances of button
 
+        final LinearLayout linLayout = findViewById(R.id.linLayout);    //add buttons to this badboy
         editAllergen = findViewById(R.id.editAllergenText);
-        viewno = findViewById(R.id.textView2);      //viewno is the textview inside scrollview
-        ingredient_no.add("Nuts");                  //Hardcoding array for testing
-        ingredient_no.add("Milk");
-        ingredient_no.add("Apple");
-        ingredient_no.add("Peanuts");
-        ingredient_no.add("Dairy");
 
-        String output = ingredient_no.get(0);      //output is what will be printed inside scrollview
-        if (ingredient_no.size() > 1) {
-            for (int i = 1; i < ingredient_no.size(); i++)
-                output = output + "\n" + ingredient_no.get(i);
+        ingredient_no = (ArrayList<String>) User.getIngredientsNo(); //Import Users list
+
+        if (ingredient_no.size() > 0) {                                 //make buttons for all ingredient no
+            for (i[0] = 0; i[0] < ingredient_no.size(); i[0]++){
+                String str = ingredient_no.get(i[0]);
+                btnArr[i[0]] = new Button(this);
+                btnArr[i[0]].setText(str);
+                btnArr[i[0]].setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                btnArr[i[0]].setCompoundDrawablesWithIntrinsicBounds(0,0,android.R.drawable.ic_menu_delete,0);
+                linLayout.addView(btnArr[i[0]]);
+                final int finalI = i[0];
+                btnArr[i[0]].setOnClickListener(new View.OnClickListener() {    //if clicked, delete the button
+                    @Override
+                    public void onClick(View v) {
+                        btnArr[finalI].setVisibility(View.GONE);
+                        i[0]--;
+                    }
+                });
+            }
+
         }
-
-        viewno.setText((output));       //printing output to scrollview
 
         addnoBtn = (Button) findViewById(R.id.addBtn);   //addnoBtn is the add button
         addnoBtn.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +65,6 @@ public class Settings_EditAllergen extends AppCompatActivity {
             public void onClick(View v) {
                 String Item = editAllergen.getText().toString().trim();
                 int duplicate = 0;
-                int otherList = 0;
 
                 //Check if Item is already in list of unwanted ingredients
                 for (int j = 0; j < ingredient_no.size(); j++) {
@@ -53,60 +72,31 @@ public class Settings_EditAllergen extends AppCompatActivity {
                         duplicate = 1;
                 }
 
-
-                if (duplicate == 0 && otherList == 0) {
+                if (duplicate == 0) {           //if not duplicate, create button for that item
                     ingredient_no.add(Item);
 
-                    //Getting output for ingredients the user does not want
-                    String output = ingredient_no.get(0);
-                    if (ingredient_no.size() > 1) {
-                        for (int i = 1; i < ingredient_no.size(); i++)
-                            output = output + "\n" + ingredient_no.get(i);
-                    }
+                    btnArr[i[0]] = new Button(btnArr[i[0]].getContext());
+                    btnArr[i[0]].setText(Item);
+                    btnArr[i[0]].setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                    btnArr[i[0]].setCompoundDrawablesWithIntrinsicBounds(0,0,android.R.drawable.ic_menu_delete,0);
+                    btnArr[i[0]].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ViewGroup layout = (ViewGroup) btnArr[i[0]].getParent();
+                            btnArr[i[0]].setVisibility(View.GONE);
+//                            i[0]--;
+                        }
+                    });
+                    linLayout.addView(btnArr[i[0]]);
+//                    i[0]++;
 
-                    viewno.setText(output);
-                    editAllergen.setText("");
                 } else if (duplicate == 1) {
                     Toast.makeText(Settings_EditAllergen.this, "Duplicate ingredient", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Settings_EditAllergen.this, "That's already in the other list! Remove it before adding here.", Toast.LENGTH_SHORT).show();
                 }
             }
         }); //end of add button function
 
-        rmNoBtn = (Button) findViewById(R.id.rmBtn);   //addnoBtn is the remove button
-        rmNoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String Item = editAllergen.getText().toString().trim();
-                int found=0;
+        //NOT DONE, NEED TO WORK ON UPDATING DB WITH NEW LIST OF ALLERGEN
 
-                for (int j = 0; j < ingredient_no.size(); j++) {
-                    if (Item.equals(ingredient_no.get(j)))
-                    {
-                        ingredient_no.remove(j);
-                        found = 1;
-                    }
-                }
-                if (found == 1) {
-                    //Getting output for ingredients the user does not want
-                    String output = new String();
-
-                    if(ingredient_no.size() > 0) {
-                        output = ingredient_no.get(0);
-                        if (ingredient_no.size() > 1) {
-                            for (int i = 1; i < ingredient_no.size(); i++)
-                                output = output + "\n" + ingredient_no.get(i);
-                        }
-                    }
-
-                    Toast.makeText(Settings_EditAllergen.this, "Ingredient removed", Toast.LENGTH_SHORT).show();
-                    viewno.setText(output);
-                } else {
-                    Toast.makeText(Settings_EditAllergen.this, "Ingredient not found in current list", Toast.LENGTH_SHORT).show();
-                }
-                editAllergen.setText("");
-            }
-        }); //end of remove button function
-    }
+    } //end of onCreate
 }
