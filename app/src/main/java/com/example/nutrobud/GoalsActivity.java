@@ -85,7 +85,6 @@ public class GoalsActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
         // hardcoded progress bar for first nutrient. Will update dynamically once data pulled from firestore sucessfully
         tv1=(TextView)findViewById(R.id.pbar1ratio);
         progressBar1=findViewById(R.id.pbar1);
