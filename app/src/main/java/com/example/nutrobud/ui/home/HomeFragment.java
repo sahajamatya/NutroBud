@@ -1,3 +1,9 @@
+/*
+Author: Sahaj Amatya
+UTA ID: 1001661825
+github.com/sahajamatya
+ */
+
 package com.example.nutrobud.ui.home;
 
 import android.Manifest;
@@ -65,6 +71,7 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class HomeFragment<i> extends Fragment {
 
+    //Button initializations
     Button todayBtn;
     Button scanBtn;
     Button calendarBtn;
@@ -72,43 +79,38 @@ public class HomeFragment<i> extends Fragment {
     Button goalsBtn;
     Button secretBtn;
 
+    //scanStatus booleans
+    /*
+    These values are set to true once the item in question has been recorded so it doesn't keep looking
+    for it in the scanned text block.
+     */
     boolean caloriesScanStatus = false;
     boolean sodiumScanStatus = false;
     boolean proteinScanStatus = false;
     boolean carbsScanStatus = false;
     boolean fatScanStatus = false;
 
-    private DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");
-
-    private List<User> userList = new ArrayList<>();
-
     //Firebase Cloud Firestore Gang
-    private Map<String, Object> user = new HashMap<String, Object>();
-    private Map<String, Stats> statsMapObj = new HashMap<String, Stats>();
-    private Map<String, Integer> nutrients = new HashMap<String, Integer>();
+    private Map<String, Object> user = new HashMap<String, Object>(); //User obj will be wrapped into this map to be posted
+    private Map<String, Stats> statsMapObj = new HashMap<String, Stats>();//Stats obj will be wrapped into this map to be added into User
+    private Map<String, Integer> nutrients = new HashMap<String, Integer>();//Stats.nutrients will be wrapped into this map to be added to Stats
     private Stats statsObj = new Stats();
     private User userDBData;
-    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
+    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");//Document ref to post data
 
+    //List where pulled data will be kept on a per index basis
     private List<User> userData = new ArrayList<>();
 
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
     private String todayDate = formatter.format(new Date());
-    boolean[] scanStatus = new boolean[]{false, false, false, false, false};
+
+    //hardcoded allergen array, for now. Will be dynamically pulled from Firestore in near future.
     String[] allergens = {"citric acid", "folic acid"};
-    String[] nutrientsArr = {"calories","sodium","protein","carbs","fat"};
 
     private int countClicks = 0;
 
     String memo ="";
-    enum status {
-        CALORIES,
-        SODIUM,
-        PROTEIN,
-        CARBS,
-        FAT
-    }
 
     ImageView imageView;
     String pathToFile;
@@ -165,6 +167,8 @@ public class HomeFragment<i> extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+
+        //linking all buttons and UI components to their respective variables
         todayBtn = (Button) getView().findViewById(R.id.todayBtn);
         scanBtn = (Button) getView().findViewById(R.id.scanBtn);
         calendarBtn = (Button) getView().findViewById(R.id.calendarBtn);
@@ -227,6 +231,7 @@ public class HomeFragment<i> extends Fragment {
 
     }
 
+    //Whenever the user is done taking a picture:
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -239,7 +244,7 @@ public class HomeFragment<i> extends Fragment {
             if(requestCode == 1){
                 Bitmap bitmap = BitmapFactory.decodeFile(pathToFile);
                 Matrix matrix = new Matrix();
-                matrix.postRotate(90);
+                matrix.postRotate(90);//rotate image 90 degrees clockwise
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 InputImage image = InputImage.fromBitmap(rotatedBitmap, 0);
                 TextRecognizer recognizer = TextRecognition.getClient();
@@ -248,7 +253,7 @@ public class HomeFragment<i> extends Fragment {
                                 new OnSuccessListener<Text>() {
                                     @Override
                                     public void onSuccess(Text texts) {
-                                        processTextRecognitionResult(texts);
+                                        processTextRecognitionResult(texts);//send recognized text to be processed
                                     }
                                 })
                         .addOnFailureListener(
@@ -269,7 +274,7 @@ public class HomeFragment<i> extends Fragment {
 
     @SuppressLint("RestrictedApi")
     private void processTextRecognitionResult(Text texts) {
-        List<Text.TextBlock> blocks = texts.getTextBlocks();
+        List<Text.TextBlock> blocks = texts.getTextBlocks();//convert text to text blocks, each block is stored in a List
         if (blocks.size() == 0) {
             showToast("No text found");
             System.out.println("No text found");
@@ -278,17 +283,14 @@ public class HomeFragment<i> extends Fragment {
         String calories;
         boolean caloriesFound = false;
         memo="";
-
+        //text search algorithm
         for (int i = 0; i < blocks.size(); i++) {
             String textBlock = blocks.get(i).getText();
-            String nextBlock="";
-            if(i<blocks.size()-1){
-                nextBlock = blocks.get(i+1).getText();
-            }
-            searchHelper(textBlock, nextBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
+            searchHelper(textBlock, "calories", "sodium", "protein", "carbohydrate", "fat");
+            //searchHelper helps search for the param values inside textBlock
         }
 
-        //Setting data in the Firestore DB
+        //Setting data in the Firestore DB after done searching
         //setFirestoreData
         user.put("stats", statsMapObj);
         dr.set(user, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -300,18 +302,17 @@ public class HomeFragment<i> extends Fragment {
         //END: setFirestoreData
     }
 
-    public void searchHelper(String textBlock, String nextBlock, String calories, String sodium, String protein, String carbs, String fat){
-        searchNutrients(textBlock, nextBlock, calories, caloriesScanStatus);
-        searchNutrients(textBlock, nextBlock, sodium, sodiumScanStatus);
-        searchNutrients(textBlock, nextBlock, protein, proteinScanStatus);
-        searchNutrients(textBlock, nextBlock, carbs, carbsScanStatus);
-        searchNutrients(textBlock, nextBlock, fat, fatScanStatus);
+    public void searchHelper(String textBlock, String calories, String sodium, String protein, String carbs, String fat){
+        searchNutrients(textBlock, calories, caloriesScanStatus);
+        searchNutrients(textBlock, sodium, sodiumScanStatus);
+        searchNutrients(textBlock, protein, proteinScanStatus);
+        searchNutrients(textBlock, carbs, carbsScanStatus);
+        searchNutrients(textBlock, fat, fatScanStatus);
 
         searchAllergens(textBlock);
     }
 
     public void searchAllergens(String textBlock){
-        //System.out.println("INSIDE FUNCTION");
         for(String s: allergens){
             if(textBlock.toLowerCase().contains(s) && !memo.contains(s)){
                 System.out.println("ALLERGEN DETECTED: "+ s.toUpperCase());
@@ -320,7 +321,7 @@ public class HomeFragment<i> extends Fragment {
         }
     }
 
-    public void searchNutrients(String textBlock, String nextBlock, final String entityToSearch, boolean scanStatus){
+    public void searchNutrients(String textBlock, final String entityToSearch, boolean scanStatus){
         String entityQty;
 
         if( caloriesScanStatus && sodiumScanStatus && proteinScanStatus && carbsScanStatus && fatScanStatus){
@@ -330,9 +331,12 @@ public class HomeFragment<i> extends Fragment {
         if(textBlock.toLowerCase().contains((entityToSearch))){
             entityQty = extractNumerals(textBlock.toLowerCase().substring(textBlock.toLowerCase().indexOf(entityToSearch)));
 
+            //if entityToSearch is not present, its quantity is zero
             if(entityQty.equals("")){
                 entityQty="0";
             }
+
+            //convert String to integer
             final int entityQtyNum = Integer.parseInt(entityQty);
 
             int trackedCalories = 0;
@@ -341,6 +345,7 @@ public class HomeFragment<i> extends Fragment {
             int trackedSodium =0;
             int trackedFat = 0;
 
+            //check if it's already recorded today
             if(userData.get(0).getStats().containsKey(todayDate)){
                 //the following are values fetched from the database so that new data can be added to them
                 trackedCalories = userData.get(0).getStats().get(todayDate).getCaloriesTrackedQty();
@@ -379,6 +384,7 @@ public class HomeFragment<i> extends Fragment {
         }
     }
 
+    //This function extracts numeric values from the textBlock
     public String extractNumerals(String textBlock){
         String numeral="";
         int count=0;
@@ -395,6 +401,7 @@ public class HomeFragment<i> extends Fragment {
         return numeral;
     }
 
+    //checks if a string is numeric
     public boolean isNumeric(String toTest){
         if(android.text.TextUtils.isDigitsOnly(toTest)){
             return true;
@@ -409,6 +416,7 @@ public class HomeFragment<i> extends Fragment {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    //basic boiler plate function that dispatches camera
     private void dispatchCamera() {
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePicture.resolveActivity(getActivity().getPackageManager())!=null){
