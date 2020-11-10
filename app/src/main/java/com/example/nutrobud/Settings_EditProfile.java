@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Settings_EditProfile extends AppCompatActivity {
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/"+User.getId()); //to get reference to users data
+    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10002"); //to get reference to users data
     private Map<String, Object> user = new HashMap<String, Object>();
     EditText first, last, age, weight;
 

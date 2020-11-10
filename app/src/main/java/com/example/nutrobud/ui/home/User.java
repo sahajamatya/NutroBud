@@ -4,28 +4,27 @@ import java.util.List;
 import java.util.Map;
 
 public class User {
-    private static int id;
-//    private int id;
-    private static String email;
-    private static String password;
-    private static String firstName;
-    private static String secondName;
-    private static int age;
-    private static String gender;
-    private static int weight;
-    private static List<String> ingredientsNo;
+    private int id;
+    private String email;
+    private String password;
+    private String firstName;
+    private String secondName;
+    private int age;
+    private String gender;
+    private int weight;
+    private List<String> ingredientsNo;
     private List<String> ingredientsYes;
     private List<Integer> ingredientsYesGoalsQty;
     private List<Integer> ingredientsYesTrackedQty;
-    private static int calorieGoalsQty;
-    private static int calorieTrackedQty;
+    private int calorieGoalsQty;
+    private int calorieTrackedQty;
     private Map<String, Stats> stats;
 
     public User(){
 
     }
 
-    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -43,7 +42,7 @@ public class User {
         this.stats = stats;
     }
 
-    public static int getId() {
+    public int getId() {
         return id;
     }
 
@@ -67,7 +66,7 @@ public class User {
         this.password = password;
     }
 
-    public static String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -75,7 +74,7 @@ public class User {
         this.firstName = firstName;
     }
 
-    public static String getSecondName() {
+    public String getSecondName() {
         return secondName;
     }
 
@@ -83,7 +82,7 @@ public class User {
         this.secondName = secondName;
     }
 
-    public static int getAge() {
+    public int getAge() {
         return age;
     }
 
@@ -99,7 +98,7 @@ public class User {
         this.gender = gender;
     }
 
-    public static int getWeight() {
+    public int getWeight() {
         return weight;
     }
 
@@ -107,7 +106,7 @@ public class User {
         this.weight = weight;
     }
 
-    public static List<String> getIngredientsNo() {
+    public List<String> getIngredientsNo() {
         return ingredientsNo;
     }
 

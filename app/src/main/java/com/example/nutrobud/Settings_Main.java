@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.nutrobud.ui.home.Stats;
 import com.example.nutrobud.ui.home.User;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Settings_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__main);
 
-        /*From Here to Line 42 (Log.d function) is me trying to hardcode a user so I can manipulate the data!*/
+        /*From Here to Line 56 is me trying to hardcode a user so I can manipulate the data!*/
         List<String> ingredientsNo = new ArrayList<String>();
         ingredientsNo.add("nuts");
         ingredientsNo.add("almonds");
@@ -37,9 +38,22 @@ public class Settings_Main extends AppCompatActivity {
         ingredientsYesTrackedQty.add(1);
         ingredientsYesTrackedQty.add(2);
         ingredientsYesTrackedQty.add(3);
-        new User(10002, "anh.nguyen2@mav.uta.edu", "myPassWo@rd", "Anh", "Nguyen", 69, "m", 169, ingredientsNo, ingredientsYes, ingredientsYesGoalsQty, ingredientsYesTrackedQty, 2000, 2000);
-        int id = User.getId();
-        Log.d("Id",id+"");
+
+        User User = new User();
+        User.setId(10002);
+        User.setEmail("anh.nguyen2@mav.uta.edu");
+        User.setPassword("myPassWo@rd");
+        User.setFirstName("Anh");
+        User.setSecondName("Nguyen");
+        User.setGender("m");
+        User.setAge(69);
+        User.setWeight(169);
+        User.setIngredientsNo(ingredientsNo);
+        User.setIngredientsYes(ingredientsYes);
+        User.setIngredientsYesGoalsQty(ingredientsYesGoalsQty);
+        User.setIngredientsYesTrackedQty(ingredientsYesTrackedQty);
+        User.setCalorieGoalsQty(2000);
+        User.setcalorieTrackedQty(2000);
         /*End of Creating User*/
 
         Button btn2EditProfile = (Button)findViewById(R.id.editProfileBtn);                                     //Button to go to EditProfile page

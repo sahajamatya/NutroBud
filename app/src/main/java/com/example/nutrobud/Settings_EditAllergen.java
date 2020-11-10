@@ -19,9 +19,11 @@ import com.example.nutrobud.R;
 import com.example.nutrobud.ui.home.User;
 
 import java.util.ArrayList;
- /*
-    DISCLAIMER, CODE WRITTEN ON THIS FILE WAS PARTIALLY TAKEN FROM LYDIA SARVER
- */
+import java.util.List;
+
+/*
+   DISCLAIMER, CODE WRITTEN ON THIS FILE WAS PARTIALLY TAKEN FROM LYDIA SARVER
+*/
 public class Settings_EditAllergen extends AppCompatActivity {
     ArrayList<String> ingredient_no = new ArrayList<>();    //initializing variables
     TextView  editAllergen;
@@ -37,7 +39,12 @@ public class Settings_EditAllergen extends AppCompatActivity {
         final LinearLayout linLayout = findViewById(R.id.linLayout);    //add buttons to this badboy
         editAllergen = findViewById(R.id.editAllergenText);
 
-        ingredient_no = (ArrayList<String>) User.getIngredientsNo(); //Import Users list
+        List<String> ingredientsNo = new ArrayList<String>();               //HARDCODING FOR NOW
+        ingredientsNo.add("nuts");
+        ingredientsNo.add("almonds");
+        ingredientsNo.add("chicken");
+
+        ingredient_no = (ArrayList<String>) ingredientsNo; //Import Users list
 
         if (ingredient_no.size() > 0) {                                 //make buttons for all ingredient no
             for (i[0] = 0; i[0] < ingredient_no.size(); i[0]++){
