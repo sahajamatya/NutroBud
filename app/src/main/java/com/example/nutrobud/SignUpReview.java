@@ -16,11 +16,22 @@ import android.widget.Toast;
 
 import com.example.nutrobud.ui.home.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class SignUpReview extends AppCompatActivity {
 
@@ -28,6 +39,12 @@ public class SignUpReview extends AppCompatActivity {
     ListView reviewview;
     FirebaseAuth fAuth;
     ProgressBar progressbar;
+    Map<String, Object> userList = new HashMap<String, Object>(); //Will store the items from user to put into the db
+    User user;
+    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
+    //NEED TO KNOW HOW TO CHECK WHAT USER ID'S ARE AVAILABLE
+    private DocumentReference dr = FirebaseFirestore.getInstance().document("users" + user.getId());//Document ref to post data
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +52,7 @@ public class SignUpReview extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_review);
 
         //Get user variable from previous activity
-        final User user = getIntent().getParcelableExtra("User");
+        user = getIntent().getParcelableExtra("User");
 
         okaybtn = findViewById(R.id.OkayBtn);
         reviewview = findViewById(R.id.ReviewView);
@@ -155,8 +172,6 @@ public class SignUpReview extends AppCompatActivity {
                             Toast.makeText(SignUpReview.this, "Account Created!", Toast.LENGTH_SHORT).show();
                             //Store user in the database
                             updateDB(user);
-
-                            startActivity(new Intent(getApplicationContext(), DashActivity.class));
                         }else{
                             Toast.makeText(SignUpReview.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -167,7 +182,26 @@ public class SignUpReview extends AppCompatActivity {
         });
     }
 
+    //Put items in the database
     public void updateDB(User user){
+        //Put user into userList to load into db later
+        userList.put("age", user.getAge());
+        userList.put("calorieGoalsQty", user.getCalorieGoalsQty());
+        userList.put("email", user.getEmail());
+        userList.put("firstName", user.getFirstName());
+        userList.put("gender", user.getGender());
+        userList.put("id", user.getId());
+        userList.put("ingredientsNo", user.getIngredientsNo());
+        userList.put("ingredientsYes", user.getIngredientsYes());
+        userList.put("ingredientsYesGoalsQty", user.getIngredientsYesGoalsQty());
+        userList.put("password", user.getPassword());
+        userList.put("secondName", user.getSecondName());
 
+        dr.set(userList, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                startActivity(new Intent(getApplicationContext(), DashActivity.class));
+            }
+        });
     }
 }
