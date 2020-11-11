@@ -42,8 +42,8 @@ public class SignUpReview extends AppCompatActivity {
     Map<String, Object> userList = new HashMap<String, Object>(); //Will store the items from user to put into the db
     User user;
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
-    //NEED TO KNOW HOW TO CHECK WHAT USER ID'S ARE AVAILABLE
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users" + user.getId());//Document ref to post data
+    private DocumentReference dr;
+    private List<User> userData = new ArrayList<>();
 
 
     @Override
@@ -61,6 +61,23 @@ public class SignUpReview extends AppCompatActivity {
         progressbar = findViewById(R.id.progressBar);
 
         progressbar.setVisibility(View.INVISIBLE);
+
+        //Get user id's and get the next one for current new user
+        userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
+                if(!queryDocumentSnapshot.isEmpty()){
+                    List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+                    for(DocumentSnapshot d: userDBDataList){
+                        userData.add(d.toObject(User.class));
+                    }
+                    user.setId(userData.size() + 10000);
+                }
+            }
+        });
+
+        dr = FirebaseFirestore.getInstance().document("users/" + user.getId());//Document ref to post data
+
 
         //These variables are for outputting and formatting data for a the ListView
         //of the information he user has entered
@@ -104,7 +121,7 @@ public class SignUpReview extends AppCompatActivity {
             output.add("No ingredients listed to avoid");
         }
 
-        if(user.getIngredientsYes().size() != 0) {
+        if(user.getIngredientsYes() != null) {
             for (int i = 0; i < user.getIngredientsYes().size()-1; i++) {
                 //Value will be -1 if no goal is recorded
                 if(user.getIngredientsYesGoalsQty().get(i) != -1) {
@@ -115,7 +132,7 @@ public class SignUpReview extends AppCompatActivity {
                 }
             }
             //Add all of the above things stored in "temp" but also add the last two items without having the new line after the last item
-            output.add("Vitamins or nutrients to track: \n" + temp + user.getIngredientsYesGoalsQty().get(user.getIngredientsYesGoalsQty().size()-1) + "mg goal per day of" + user.getIngredientsYes().get(user.getIngredientsYes().size()-1));
+            output.add("Vitamins or nutrients to track: \n" + temp + user.getIngredientsYesGoalsQty().get(user.getIngredientsYesGoalsQty().size()) + "mg goal per day of" + user.getIngredientsYes().get(user.getIngredientsYes().size()));
             temp = "\0";
         }
         else{

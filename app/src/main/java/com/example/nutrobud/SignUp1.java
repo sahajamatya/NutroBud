@@ -34,6 +34,7 @@ public class SignUp1 extends AppCompatActivity {
 
         //Get user and it's stored data from the previous activity
         final User user = getIntent().getParcelableExtra("User");
+        user.setId(1); //Set place holder. Will be changed in the review portion
 
         name_first = findViewById(R.id.Name_First);
         name_last = findViewById(R.id.Name_Last);
@@ -59,7 +60,8 @@ public class SignUp1 extends AppCompatActivity {
         if(user.getAge() != -1)
         {
             //Set text to previously entered age
-            age.setText(user.getAge(), TextView.BufferType.EDITABLE);
+            String age_s = Integer.toString(user.getAge());
+            age.setText(age_s, TextView.BufferType.EDITABLE);
         }
         //Check if user has previously selected a gender
         if (user.getGender() != null) {
