@@ -3,6 +3,7 @@ package com.example.nutrobud.ui.home;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public class User implements Parcelable{
     private int weight;
     private List<String> ingredientsNo;
     private List<String> ingredientsYes;
-    private List<Integer> ingredientsYesGoalsQty;
-    private List<Integer> ingredientsYesTrackedQty;
+    private ArrayList<Integer> ingredientsYesGoalsQty;
+    private ArrayList<Integer> ingredientsYesTrackedQty;
     private int calorieGoalsQty;
     private int calorieTrackedQty;
     private Map<String, Stats> stats;
@@ -29,7 +30,7 @@ public class User implements Parcelable{
         weight = -1;
     }
 
-    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, ArrayList<Integer> ingredientsYesGoalsQty, ArrayList<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -57,6 +58,10 @@ public class User implements Parcelable{
         weight = in.readInt();
         ingredientsNo = in.createStringArrayList();
         ingredientsYes = in.createStringArrayList();
+        ingredientsYesGoalsQty = new ArrayList<Integer>();
+        in.readList(ingredientsYesGoalsQty, null);
+        ingredientsYesTrackedQty = new ArrayList<Integer>();
+        in.readList(ingredientsYesTrackedQty, null);
         calorieGoalsQty = in.readInt();
         calorieTrackedQty = in.readInt();
     }
@@ -157,7 +162,7 @@ public class User implements Parcelable{
         return ingredientsYesGoalsQty;
     }
 
-    public void setIngredientsYesGoalsQty(List<Integer> ingredientsYesGoalsQty) {
+    public void setIngredientsYesGoalsQty(ArrayList<Integer> ingredientsYesGoalsQty) {
         this.ingredientsYesGoalsQty = ingredientsYesGoalsQty;
     }
 
@@ -165,7 +170,7 @@ public class User implements Parcelable{
         return ingredientsYesTrackedQty;
     }
 
-    public void setIngredientsYesTrackedQty(List<Integer> ingredientsYesTrackedQty) {
+    public void setIngredientsYesTrackedQty(ArrayList<Integer> ingredientsYesTrackedQty) {
         this.ingredientsYesTrackedQty = ingredientsYesTrackedQty;
     }
 

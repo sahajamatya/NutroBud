@@ -49,20 +49,19 @@ public class SignUpGoals extends AppCompatActivity {
 
         //Get user's wanted list of vitamins and nutrients
         final List<String> ingredient_yes = user.getIngredientsYes();
-        final List<Integer> ing_yes_goals = new ArrayList<Integer>();
+        ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
 
         //Check if the user already has goals set
-        if(user.getIngredientsYesGoalsQty() != null) {
-            //Get user's wanted list of vitamins and nutrients for goals
-            ing_yes_goals.addAll(user.getIngredientsYesGoalsQty());
-        }else {
+        if(user.getIngredientsYesGoalsQty() == null) {
             //If there were not any set
             //Make ing_yes_goals the same size as ingredient_yes so indexes match up
             for (int i = 0; i < ingredient_yes.size(); i++) {
                 //-1 means no goal set
-                ing_yes_goals.add(-1);
+                ing_goals_yes.add(-1);
             }
         }
+
+        user.setIngredientsYesGoalsQty(ing_goals_yes);
 
         //Set formatting for output
         final ArrayList<String> Output = new ArrayList<>();
@@ -71,12 +70,12 @@ public class SignUpGoals extends AppCompatActivity {
         {
             temp = ingredient_yes.get(i);
             //Check if there is a goal set or not
-            if(ing_yes_goals.get(i) == -1) {
+            if(user.getIngredientsYesGoalsQty().get(i) == -1) {
                 //If no goal set:
                 temp = temp + " | No daily goal set";
             } else{
                 //If goal is set:
-                temp = temp + " | " + ing_yes_goals.get(i) + " mg per day";
+                temp = temp + " | " + user.getIngredientsYesGoalsQty().get(i) + " mg per day";
             }
             Output.add(temp);
         }
@@ -136,7 +135,14 @@ public class SignUpGoals extends AppCompatActivity {
                         //Update goals list with user input goal
                         for (int j = 0; j < ingredient_yes.size(); j++) {
                             if (Item.equals(ingredient_yes.get(j))) {
-                                ing_yes_goals.add(j, Goal);
+                                user.getIngredientsYesGoalsQty().add(j, Goal);
+                            }
+                        }
+
+                        //Update output
+                        for (int j = 0; j < Output.size(); j++) {
+                            if(Output.get(j).contains(Item)) {
+                                Output.remove(j);
                                 Output.add(j, ingredient_yes.get(j) + " | " + Goal_s + " mg per day");
                             }
                         }
@@ -176,11 +182,8 @@ public class SignUpGoals extends AppCompatActivity {
                     user.setCalorieGoalsQty(2000);
                 }
 
-                //Save the wanted amount of vitamins or nutrients into user
-                user.setIngredientsYesGoalsQty(ing_yes_goals);
-
                 //Pass intent and user to next activity
-                Intent i = new Intent(getApplicationContext(), SignUpReview.class);
+                Intent i = new Intent(SignUpGoals.this, SignUpReview.class);
                 i.putExtra("User", user);
                 startActivity(i);
             }
