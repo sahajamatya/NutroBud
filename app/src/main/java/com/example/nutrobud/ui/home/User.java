@@ -13,24 +13,24 @@ public class User implements Parcelable{
     private String password;
     private String firstName;
     private String secondName;
-    private int age;
+    private int age=-1;
     private String gender;
     private int weight;
     private List<String> ingredientsNo;
     private List<String> ingredientsYes;
-    private ArrayList<Integer> ingredientsYesGoalsQty;
-    private ArrayList<Integer> ingredientsYesTrackedQty;
+    private List<String> ingredientsYesGoalsQty;
+    private List<String> ingredientsYesTrackedQty;
     private int calorieGoalsQty;
     private int calorieTrackedQty;
     private Map<String, Stats> stats;
 
 
     public User(){
-        age = -1;
-        weight = -1;
+        //this.age = -1;
+        //this.weight = -1;
     }
 
-    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, ArrayList<Integer> ingredientsYesGoalsQty, ArrayList<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<String> ingredientsYesGoalsQty, List<String> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -49,6 +49,7 @@ public class User implements Parcelable{
     }
 
     private User(Parcel in) {
+        id = in.readInt();
         email = in.readString();
         password = in.readString();
         firstName = in.readString();
@@ -58,10 +59,8 @@ public class User implements Parcelable{
         weight = in.readInt();
         ingredientsNo = in.createStringArrayList();
         ingredientsYes = in.createStringArrayList();
-        ingredientsYesGoalsQty = new ArrayList<Integer>();
-        in.readList(ingredientsYesGoalsQty, null);
-        ingredientsYesTrackedQty = new ArrayList<Integer>();
-        in.readList(ingredientsYesTrackedQty, null);
+        ingredientsYesGoalsQty = in.createStringArrayList();
+        ingredientsYesTrackedQty = in.createStringArrayList();
         calorieGoalsQty = in.readInt();
         calorieTrackedQty = in.readInt();
     }
@@ -158,19 +157,19 @@ public class User implements Parcelable{
         this.ingredientsYes = ingredientsYes;
     }
 
-    public List<Integer> getIngredientsYesGoalsQty() {
+    public List<String> getIngredientsYesGoalsQty() {
         return ingredientsYesGoalsQty;
     }
 
-    public void setIngredientsYesGoalsQty(ArrayList<Integer> ingredientsYesGoalsQty) {
+    public void setIngredientsYesGoalsQty(List<String> ingredientsYesGoalsQty) {
         this.ingredientsYesGoalsQty = ingredientsYesGoalsQty;
     }
 
-    public List<Integer> getIngredientsYesTrackedQty() {
+    public List<String> getIngredientsYesTrackedQty() {
         return ingredientsYesTrackedQty;
     }
 
-    public void setIngredientsYesTrackedQty(ArrayList<Integer> ingredientsYesTrackedQty) {
+    public void setIngredientsYesTrackedQty(List<String> ingredientsYesTrackedQty) {
         this.ingredientsYesTrackedQty = ingredientsYesTrackedQty;
     }
 
@@ -205,6 +204,7 @@ public class User implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(email);
         dest.writeString(password);
         dest.writeString(firstName);
@@ -214,6 +214,8 @@ public class User implements Parcelable{
         dest.writeInt(weight);
         dest.writeStringList(ingredientsNo);
         dest.writeStringList(ingredientsYes);
+        dest.writeStringList(ingredientsYesGoalsQty);
+        dest.writeStringList(ingredientsYesTrackedQty);
         dest.writeInt(calorieGoalsQty);
         dest.writeInt(calorieTrackedQty);
     }
