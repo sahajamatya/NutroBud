@@ -35,7 +35,7 @@ public class SignUp1 extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up1);
 
         //Get user and it's stored data from the previous activity
-        final User user = getIntent().getParcelableExtra("User1");
+        final User user = getIntent().getParcelableExtra("User");
         //user.setId(1); //Set place holder. Will be changed in the review portion
 
         name_first = findViewById(R.id.Name_First);
