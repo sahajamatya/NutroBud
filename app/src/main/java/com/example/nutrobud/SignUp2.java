@@ -46,6 +46,45 @@ public class SignUp2 extends AppCompatActivity {
         rmvnobtn = findViewById(R.id.rmvNoBtn);
         rmvyesbtn = findViewById(R.id.rmvYesBtn);
 
+        //Check is user has a weight already entered (will be -1 if no weight is entered)
+        if(user.getWeight() != -1)
+        {
+            //Set the previously entered weight
+            weight.setText(Integer.toString(user.getWeight()), TextView.BufferType.EDITABLE);
+        }
+        //Check if a list of unwanted ingredients has already been entered
+        if(user.getIngredientsNo() != null)
+        {
+            //If it has, update the display and local list
+            String output = new String();
+            if (user.getIngredientsNo().size() > 0) {
+                output = user.getIngredientsNo().get(0);
+                ingredient_no.add(user.getIngredientsNo().get(0));
+                for (int i = 1; i < user.getIngredientsNo().size(); i++) {
+                    output = output + ", " + user.getIngredientsNo().get(i);
+                    ingredient_no.add(user.getIngredientsNo().get(i));
+                }
+            }
+            //display the list
+            viewno.setText(output);
+        }
+        //Check if a list of vitamins and nutrients has already been entered
+        if(user.getIngredientsYes() != null)
+        {
+            //If it has update the display and local list
+            String output = new String();
+            if (user.getIngredientsYes().size() > 1) {
+                output = user.getIngredientsYes().get(0);
+                ingredient_yes.add(user.getIngredientsYes().get(0));
+                for (int i = 1; i < user.getIngredientsYes().size(); i++) {
+                    output = output + ", " + user.getIngredientsYes().get(i);
+                    ingredient_yes.add(user.getIngredientsYes().get(i));
+                }
+            }
+            //display the list
+            viewyes.setText(output);
+        }
+
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +114,7 @@ public class SignUp2 extends AppCompatActivity {
             public void onClick(View view) {
                 //Pass intent and user to the previous activity
                 Intent i = new Intent(getApplicationContext(), SignUp1.class);
-                i.putExtra("User1", user);
+                i.putExtra("User", user);
                 startActivity(i);
             }
         });
@@ -87,6 +126,14 @@ public class SignUp2 extends AppCompatActivity {
                 String Item = ing_no.getText().toString().trim();
                 int duplicate = 0;
                 int otherList = 0;
+
+                //Check if the user entered anything
+                if(TextUtils.isEmpty(Item))
+                {
+                    //Error message
+                    Toast.makeText(SignUp2.this, "Field empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //Check if Item is already in list of unwanted ingredients
                 for (int j = 0; j < ingredient_no.size(); j++) {
@@ -175,6 +222,13 @@ public class SignUp2 extends AppCompatActivity {
                 int duplicate = 0;
                 int otherList = 0;
 
+                //Check if the user entered anything
+                if(TextUtils.isEmpty(Item))
+                {
+                    //Error message
+                    Toast.makeText(SignUp2.this, "Field empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 //Check for duplicate entries within the nutrient or vitamin wanted
                 for (int j = 0; j < ingredient_yes.size(); j++) {
                     if (Item.equals(ingredient_yes.get(j)))

@@ -15,7 +15,7 @@ public class User implements Parcelable{
     private String secondName;
     private int age=-1;
     private String gender;
-    private int weight;
+    private int weight = -1;
     private List<String> ingredientsNo;
     private List<String> ingredientsYes;
     private List<String> ingredientsYesGoalsQty;
@@ -26,8 +26,6 @@ public class User implements Parcelable{
 
 
     public User(){
-        //this.age = -1;
-        //this.weight = -1;
     }
 
     public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<String> ingredientsYesGoalsQty, List<String> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {

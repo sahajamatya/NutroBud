@@ -115,4 +115,15 @@
         app:layout_constraintTop_toBottomOf="@+id/GoalText"
         app:layout_constraintVertical_bias="0.502"></LinearLayout>
 
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap on a nutrient or vitamin to set a daily intake goal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
+        app:layout_constraintVertical_bias="0.59000003" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

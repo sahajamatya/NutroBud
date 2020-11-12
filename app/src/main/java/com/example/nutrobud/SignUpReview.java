@@ -130,7 +130,12 @@ public class SignUpReview extends AppCompatActivity {
                 }
             }
             //Add all of the above things stored in "temp" but also add the last two items without having the new line after the last item
-            output.add("Vitamins or nutrients to track: \n" + temp + user.getIngredientsYesGoalsQty().get(user.getIngredientsYesGoalsQty().size()) + "mg goal per day of" + user.getIngredientsYes().get(user.getIngredientsYes().size()));
+            if(Integer.parseInt(user.getIngredientsYesGoalsQty().get(user.getIngredientsYesGoalsQty().size()-1)) == -1)
+            {
+                output.add("Vitamins or nutrients to track: \n" + temp + "No goal set for " + user.getIngredientsYes().get(user.getIngredientsYes().size()-1));
+            }else{
+                output.add("Vitamins or nutrients to track: \n" + temp + user.getIngredientsYesGoalsQty().get(user.getIngredientsYesGoalsQty().size()-1) + "mg goal per day of" + user.getIngredientsYes().get(user.getIngredientsYes().size()-1));
+            }
             temp = "\0";
         }
         else{
@@ -158,7 +163,7 @@ public class SignUpReview extends AppCompatActivity {
                     intent.putExtra("User", user);
                     startActivity(intent);
                 }
-                else if(clicked.contains("Ingredient") || clicked.contains("Vitamin") || clicked.contains("Weight") || clicked.contains("weight")){
+                else if(clicked.contains("Ingredient") || clicked.contains("Vitamin") || clicked.contains("Weight") || clicked.contains("weight") || clicked.contains("avoid")){
                     //This will take the user to where they entered the items
                     //If there is an issue with the goals, they will have to progress
                     //though the next page that will allow this to be altered
@@ -187,7 +192,6 @@ public class SignUpReview extends AppCompatActivity {
                             Toast.makeText(SignUpReview.this, "Account Created!", Toast.LENGTH_SHORT).show();
 
                             user.setId(userData.size() + 10001);
-                            System.out.println("somthing identifiable: "+user.getId());
                             dr = FirebaseFirestore.getInstance().document("users/" + user.getId());//Document ref to post data
 
 

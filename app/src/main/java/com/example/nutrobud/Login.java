@@ -63,9 +63,9 @@ public class Login extends AppCompatActivity {
         };
 
         //If there is already a user active through authenticator, they will be automatically logged in
-        if(fAuth.getCurrentUser() != null)
+        /*if(fAuth.getCurrentUser() != null)
             startActivity(new Intent(getApplicationContext(), DashActivity.class));
-
+*/
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
