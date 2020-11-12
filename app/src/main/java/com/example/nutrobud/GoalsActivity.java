@@ -38,10 +38,10 @@ public class GoalsActivity extends AppCompatActivity {
     TextView ratio;
 
     //goal calorie progress
-    int currentCals=1100; // hardcoded for now- working on retrieving data from database
-    int calGoals=2000;
-    //int currentCals;
-    //int calGoals;
+    //int currentCals=1700; // hardcoded for now- working on retrieving data from database
+    //int calGoals=2000;
+    int currentCals;
+    int calGoals;
     private Handler hdlr = new Handler ();
 
     //get today's date
@@ -86,8 +86,8 @@ public class GoalsActivity extends AppCompatActivity {
             }
         });
 
-        //calGoals = userData.get(4).getCalorieGoalsQty();
-        //currentCals = userData.get(0).getStats().get(date).getCaloriesTrackedQty();
+        calGoals = userData.get(0).getCalorieGoalsQty();
+        currentCals = userData.get(0).getStats().get(date).getCaloriesTrackedQty();
 
         // horizontal progress bar for calories, but in circular shape
         Drawable drawable = res.getDrawable(R.drawable.circular);
