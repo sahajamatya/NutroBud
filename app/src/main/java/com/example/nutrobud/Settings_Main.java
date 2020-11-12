@@ -30,11 +30,11 @@ public class Settings_Main extends AppCompatActivity {
         ingredientsYes.add("chocolate");
         ingredientsYes.add("icecream");
         ingredientsYes.add("vanilla");
-        List<Integer> ingredientsYesGoalsQty = new ArrayList<Integer>();
+        ArrayList<Integer> ingredientsYesGoalsQty = new ArrayList<Integer>();
         ingredientsYesGoalsQty.add(1);
         ingredientsYesGoalsQty.add(2);
         ingredientsYesGoalsQty.add(3);
-        List<Integer> ingredientsYesTrackedQty = new ArrayList<Integer>();
+        ArrayList<Integer> ingredientsYesTrackedQty = new ArrayList<Integer>();
         ingredientsYesTrackedQty.add(1);
         ingredientsYesTrackedQty.add(2);
         ingredientsYesTrackedQty.add(3);

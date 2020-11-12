@@ -42,9 +42,9 @@ public class Login extends AppCompatActivity {
         progressbar = findViewById(R.id.progressBar);
 
         //If there is already a user active through authenticator, they will be automatically logged in
-        /*if(fAuth.getCurrentUser() != null)
+        if(fAuth.getCurrentUser() != null)
             startActivity(new Intent(getApplicationContext(), DashActivity.class));
-        */
+
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +71,7 @@ public class Login extends AppCompatActivity {
                 } else {
                     Toast.makeText(Login.this, "Your email or password is incorrect", Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(getApplicationContext(), DashActivity.class));
+                    //startActivity(new Intent(getApplicationContext(), DashActivity.class));
                 }
             }
         });

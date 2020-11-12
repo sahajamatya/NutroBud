@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +62,7 @@ public class SignUpReview extends AppCompatActivity {
         progressbar = findViewById(R.id.progressBar);
 
         progressbar.setVisibility(View.INVISIBLE);
+
 
         //Get user id's and get the next one for current new user
         userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -121,7 +123,7 @@ public class SignUpReview extends AppCompatActivity {
             output.add("No ingredients listed to avoid");
         }
 
-        if(user.getIngredientsYes() != null) {
+        if(user.getIngredientsYes().size() != 0) {
             for (int i = 0; i < user.getIngredientsYes().size()-1; i++) {
                 //Value will be -1 if no goal is recorded
                 if(user.getIngredientsYesGoalsQty().get(i) != -1) {
