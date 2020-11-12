@@ -83,7 +83,7 @@ public class SignUpLoginInfo extends AppCompatActivity {
 
                 //Pass intent and user to next activity
                 Intent i = new Intent(getApplicationContext(), SignUp1.class);
-                i.putExtra("User", user);
+                i.putExtra("User1", user);
                 startActivity(i);
             }
         });

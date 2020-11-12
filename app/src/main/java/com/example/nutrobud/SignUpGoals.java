@@ -49,7 +49,7 @@ public class SignUpGoals extends AppCompatActivity {
 
         //Get user's wanted list of vitamins and nutrients
         final List<String> ingredient_yes = user.getIngredientsYes();
-        ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
+        final ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
 
         //Check if the user already has goals set
         if(user.getIngredientsYesGoalsQty() == null) {
@@ -59,9 +59,12 @@ public class SignUpGoals extends AppCompatActivity {
                 //-1 means no goal set
                 ing_goals_yes.add(-1);
             }
+        }else{
+            //If it does, parse each string value of the integer into an integer and save into local string
+            for(int j = 0; j < user.getIngredientsYesGoalsQty().size(); j++){
+                ing_goals_yes.add(Integer.parseInt(user.getIngredientsYesGoalsQty().get(j)));
+            }
         }
-
-        user.setIngredientsYesGoalsQty(ing_goals_yes);
 
         //Set formatting for output
         final ArrayList<String> Output = new ArrayList<>();
@@ -70,7 +73,7 @@ public class SignUpGoals extends AppCompatActivity {
         {
             temp = ingredient_yes.get(i);
             //Check if there is a goal set or not
-            if(user.getIngredientsYesGoalsQty().get(i) == -1) {
+            if(ing_goals_yes.get(i) == -1) {
                 //If no goal set:
                 temp = temp + " | No daily goal set";
             } else{
@@ -135,7 +138,7 @@ public class SignUpGoals extends AppCompatActivity {
                         //Update goals list with user input goal
                         for (int j = 0; j < ingredient_yes.size(); j++) {
                             if (Item.equals(ingredient_yes.get(j))) {
-                                user.getIngredientsYesGoalsQty().add(j, Goal);
+                                ing_goals_yes.add(j, Goal);
                             }
                         }
 
@@ -181,6 +184,16 @@ public class SignUpGoals extends AppCompatActivity {
                     //If the user did not enter anyting, save a default value of 2000
                     user.setCalorieGoalsQty(2000);
                 }
+
+                //Parse all of the goals back into strings from integers
+                List<String> ing_yes_goal_s= new ArrayList<String>();
+                for(int j = 0; j < ing_goals_yes.size(); j++)
+                {
+                    ing_yes_goal_s.add(ing_goals_yes.get(j).toString());
+                }
+
+                //Set user's variable for goals
+                user.setIngredientsYesGoalsQty(ing_yes_goal_s);
 
                 //Pass intent and user to next activity
                 Intent i = new Intent(SignUpGoals.this, SignUpReview.class);

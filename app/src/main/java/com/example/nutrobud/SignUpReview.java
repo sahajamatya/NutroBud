@@ -73,13 +73,9 @@ public class SignUpReview extends AppCompatActivity {
                     for(DocumentSnapshot d: userDBDataList){
                         userData.add(d.toObject(User.class));
                     }
-                    user.setId(userData.size() + 10000);
                 }
             }
         });
-
-        dr = FirebaseFirestore.getInstance().document("users/" + user.getId());//Document ref to post data
-
 
         //These variables are for outputting and formatting data for a the ListView
         //of the information he user has entered
@@ -126,7 +122,7 @@ public class SignUpReview extends AppCompatActivity {
         if(user.getIngredientsYes().size() != 0) {
             for (int i = 0; i < user.getIngredientsYes().size()-1; i++) {
                 //Value will be -1 if no goal is recorded
-                if(user.getIngredientsYesGoalsQty().get(i) != -1) {
+                if(Integer.parseInt(user.getIngredientsYesGoalsQty().get(i)) != -1) {
                     temp = temp + user.getIngredientsYesGoalsQty().get(i) + " mg goal per day of " + user.getIngredientsYes().get(i) + "\n";
                 }
                 else{
@@ -162,7 +158,7 @@ public class SignUpReview extends AppCompatActivity {
                     intent.putExtra("User", user);
                     startActivity(intent);
                 }
-                else if(clicked.contains("Ingredient") || clicked.contains("Vitamin") || clicked.contains("Weight")){
+                else if(clicked.contains("Ingredient") || clicked.contains("Vitamin") || clicked.contains("Weight") || clicked.contains("weight")){
                     //This will take the user to where they entered the items
                     //If there is an issue with the goals, they will have to progress
                     //though the next page that will allow this to be altered
@@ -189,6 +185,12 @@ public class SignUpReview extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(SignUpReview.this, "Account Created!", Toast.LENGTH_SHORT).show();
+
+                            user.setId(userData.size() + 10001);
+                            System.out.println("somthing identifiable: "+user.getId());
+                            dr = FirebaseFirestore.getInstance().document("users/" + user.getId());//Document ref to post data
+
+
                             //Store user in the database
                             updateDB(user);
                         }else{
