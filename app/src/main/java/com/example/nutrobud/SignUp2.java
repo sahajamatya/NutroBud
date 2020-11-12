@@ -75,7 +75,7 @@ public class SignUp2 extends AppCompatActivity {
             public void onClick(View view) {
                 //Pass intent and user to the previous activity
                 Intent i = new Intent(getApplicationContext(), SignUp1.class);
-                i.putExtra("User", user);
+                i.putExtra("User1", user);
                 startActivity(i);
             }
         });

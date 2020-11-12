@@ -2,6 +2,7 @@ package com.example.nutrobud;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -27,14 +28,15 @@ public class SignUp1 extends AppCompatActivity {
     EditText name_first, name_last, age;
     Button nextbtn, backbtn;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up1);
 
         //Get user and it's stored data from the previous activity
-        final User user = getIntent().getParcelableExtra("User");
-        user.setId(1); //Set place holder. Will be changed in the review portion
+        final User user = getIntent().getParcelableExtra("User1");
+        //user.setId(1); //Set place holder. Will be changed in the review portion
 
         name_first = findViewById(R.id.Name_First);
         name_last = findViewById(R.id.Name_Last);
@@ -56,7 +58,7 @@ public class SignUp1 extends AppCompatActivity {
             //Set text to previously entered first name
             name_last.setText(user.getSecondName(), TextView.BufferType.EDITABLE);
         }
-        //Check if user have previously entered age (will be -1 if no age is entered
+        //Check if user have previously entered age (will be -1 if no age is entered)
         if(user.getAge() != -1)
         {
             //Set text to previously entered age
@@ -114,6 +116,7 @@ public class SignUp1 extends AppCompatActivity {
                 } else if(Integer.parseInt(Age_s) < 1) {
                     //Set error if user enters an age below 1
                     age.setError("Not a valid age");
+                    return;
                 } else {
                     //Store in user
                     user.setAge(Integer.parseInt(Age_s));
