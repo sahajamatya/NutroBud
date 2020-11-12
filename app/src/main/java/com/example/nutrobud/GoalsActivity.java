@@ -14,7 +14,17 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import com.example.nutrobud.ui.home.User;
+import com.example.nutrobud.ui.home.Stats;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 public class GoalsActivity extends AppCompatActivity {
     //nutrient progress bars
@@ -28,8 +38,10 @@ public class GoalsActivity extends AppCompatActivity {
     TextView ratio;
 
     //goal calorie progress
-    int currentCals=1700; // hardcoded for now- working on retrieving data from database
-    int calGoals=2000;
+    //int currentCals=1700; // hardcoded for now- working on retrieving data from database
+    //int calGoals=2000;
+    int currentCals;
+    int calGoals;
     private Handler hdlr = new Handler ();
 
     //get today's date
@@ -37,6 +49,11 @@ public class GoalsActivity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
     private String date;
+
+    // get data from Firestore
+    private FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+    private List<User> userData= new ArrayList<>();
+    private User userDBData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +71,23 @@ public class GoalsActivity extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("EEE- MMM d");
         date = dateFormat.format(calendar.getTime());
         dateTimeDisplay.setText(date);
+
+        // get data from "users" Firestore collection
+        userDB.collection("users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()) {
+                    List <DocumentSnapshot> userDBDataList = queryDocumentSnapshots.getDocuments();
+                    for(DocumentSnapshot d: userDBDataList) {
+                        userDBData = d.toObject(User.class);
+                        userData.add(userDBData);
+                    }
+                }
+            }
+        });
+
+        calGoals = userData.get(0).getCalorieGoalsQty();
+        currentCals = userData.get(0).getStats().get(date).getCaloriesTrackedQty();
 
         // horizontal progress bar for calories, but in circular shape
         Drawable drawable = res.getDrawable(R.drawable.circular);
