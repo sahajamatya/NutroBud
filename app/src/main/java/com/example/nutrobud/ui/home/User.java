@@ -218,5 +218,3 @@ public class User implements Parcelable{
         dest.writeInt(calorieTrackedQty);
     }
 }
-
-    
