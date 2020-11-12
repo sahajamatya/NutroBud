@@ -1,7 +1,5 @@
 package com.example.nutrobud;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nutrobud.ui.home.User;
 
@@ -56,7 +55,7 @@ public class SignUp1 extends AppCompatActivity {
                     name_last.setError("Last name is required");
                     return;
                 }else{
-                    user.setsecondName(LastName);
+                    user.setSecondName(LastName);
                 }
                 if (TextUtils.isEmpty(Age_s)) {
                     age.setError("Age is required");
