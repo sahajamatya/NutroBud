@@ -20,7 +20,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nutrobud.ui.home.User;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class SignUpGoals extends AppCompatActivity {
 
@@ -36,41 +39,57 @@ public class SignUpGoals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_goals);
 
+        final User user = getIntent().getParcelableExtra("User");
+
         nutrientview = findViewById(R.id.NutrientView);
         linlayout = findViewById(R.id.LinearLayout);
         daily_cal_text = findViewById(R.id.Daily_Cal_Text);
         reviewbtn = findViewById(R.id.ReviewBtn);
         backbtn = findViewById(R.id.BackBtn);
 
-        //This will be from user. Hard coded for now to show usability
-        final ArrayList<String> ingredient_yes = new ArrayList<>();
-        ingredient_yes.add("A");
-        ingredient_yes.add("C");
-        ingredient_yes.add("Iron");
-        ingredient_yes.add("B");
-        ingredient_yes.add("Protien");
+        //Get user's wanted list of vitamins and nutrients
+        final List<String> ingredient_yes = user.getIngredientsYes();
+        final ArrayList<Integer> ing_goals_yes = new ArrayList<Integer>();
 
-        //This will also be from user
-        final ArrayList<Integer> ing_yes_count = new ArrayList<>();
-        //Make ing_yes_count the same size as ingrerdient_yes so indexes match up
-        for(int i = 0; i < ingredient_yes.size(); i++)
-        {
-            //-1 means no goal set
-            ing_yes_count.add(-1);
+        //Check if the user already has goals set
+        if(user.getIngredientsYesGoalsQty() == null) {
+            //If there were not any set
+            //Make ing_yes_goals the same size as ingredient_yes so indexes match up
+            for (int i = 0; i < ingredient_yes.size(); i++) {
+                //-1 means no goal set
+                ing_goals_yes.add(-1);
+            }
+        }else{
+            //If it does, parse each string value of the integer into an integer and save into local string
+            for(int j = 0; j < user.getIngredientsYesGoalsQty().size(); j++){
+                ing_goals_yes.add(Integer.parseInt(user.getIngredientsYesGoalsQty().get(j)));
+            }
         }
 
+        //Set formatting for output
         final ArrayList<String> Output = new ArrayList<>();
         String temp = new String();
         for(int i = 0; i < ingredient_yes.size(); i++)
         {
-            temp = ingredient_yes.get(i) + " | No daily goal set";
+            temp = ingredient_yes.get(i);
+            //Check if there is a goal set or not
+            if(ing_goals_yes.get(i) == -1) {
+                //If no goal set:
+                temp = temp + " | No daily goal set";
+            } else{
+                //If goal is set:
+                temp = temp + " | " + user.getIngredientsYesGoalsQty().get(i) + " mg per day";
+            }
             Output.add(temp);
         }
 
+        //Must adapt output to display in a ListView
         final ArrayAdapter outputAdapted = new ArrayAdapter(this, android.R.layout.simple_list_item_1, Output);
 
+        //Display the output
         nutrientview.setAdapter(outputAdapted);
 
+        //Will begin when a vitamin or nutrient is clicked
         nutrientview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -78,8 +97,6 @@ public class SignUpGoals extends AppCompatActivity {
 
                 LayoutInflater layoutInflater = (LayoutInflater) SignUpGoals.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View goalView = layoutInflater.inflate(R.layout.popup, null);
-
-                //GoalDialog = new AlertDialog.Builder(SignUpGoals.this);
 
                 savebtn = goalView.findViewById(R.id.SaveBtn);
                 cancelbtn = goalView.findViewById(R.id.CancelBtn);
@@ -94,6 +111,7 @@ public class SignUpGoals extends AppCompatActivity {
                 goalPopUp.setFocusable(true);
                 goalPopUp.update();
 
+                //Display which vitamin or nutrient the user chose
                 nvview.setText(Item);
 
                 cancelbtn.setOnClickListener(new View.OnClickListener() {
@@ -114,18 +132,28 @@ public class SignUpGoals extends AppCompatActivity {
                             return;
                         }
 
+                        //Change the input goal from String to Integer
                         final int Goal = Integer.parseInt(Goal_s);
 
-                        //Will use Arraylist<Integer> wantNutrientsGoal from user
+                        //Update goals list with user input goal
                         for (int j = 0; j < ingredient_yes.size(); j++) {
                             if (Item.equals(ingredient_yes.get(j))) {
-                                ing_yes_count.add(j, Goal);
-                                Output.add(j, ingredient_yes.get(j) + " | " + Goal_s + " grams per day");
+                                ing_goals_yes.add(j, Goal);
                             }
                         }
 
+                        //Update output
+                        for (int j = 0; j < Output.size(); j++) {
+                            if(Output.get(j).contains(Item)) {
+                                Output.remove(j);
+                                Output.add(j, ingredient_yes.get(j) + " | " + Goal_s + " mg per day");
+                            }
+                        }
+
+                        //Update display
                         outputAdapted.notifyDataSetChanged();
 
+                        //Make the popup go away
                         goalPopUp.dismiss();
                     }
                 });
@@ -135,7 +163,10 @@ public class SignUpGoals extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), SignUp2.class));
+                //Pass intent and user to next activity
+                Intent i = new Intent(getApplicationContext(), SignUp2.class);
+                i.putExtra("User", user);
+                startActivity(i);
             }
         });
 
@@ -144,13 +175,30 @@ public class SignUpGoals extends AppCompatActivity {
             public void onClick(View view) {
                 String dailyCal_s = daily_cal_text.getText().toString().trim();
 
+                //Check if a calorie goal per day was set
                 if(!TextUtils.isEmpty(dailyCal_s))
                 {
-                    int dailyCal = Integer.parseInt(dailyCal_s);
-                    //Store in User at this point
+                    //If it is not empty, save to user
+                    user.setCalorieGoalsQty(Integer.parseInt(dailyCal_s));
+                } else{
+                    //If the user did not enter anyting, save a default value of 2000
+                    user.setCalorieGoalsQty(2000);
                 }
 
-                startActivity(new Intent(getApplicationContext(), SignUpReview.class));
+                //Parse all of the goals back into strings from integers
+                List<String> ing_yes_goal_s= new ArrayList<String>();
+                for(int j = 0; j < ing_goals_yes.size(); j++)
+                {
+                    ing_yes_goal_s.add(ing_goals_yes.get(j).toString());
+                }
+
+                //Set user's variable for goals
+                user.setIngredientsYesGoalsQty(ing_yes_goal_s);
+
+                //Pass intent and user to next activity
+                Intent i = new Intent(SignUpGoals.this, SignUpReview.class);
+                i.putExtra("User", user);
+                startActivity(i);
             }
         });
     }

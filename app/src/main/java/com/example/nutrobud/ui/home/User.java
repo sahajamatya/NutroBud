@@ -1,30 +1,36 @@
 package com.example.nutrobud.ui.home;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class User {
+public class User implements Parcelable{
     private int id;
     private String email;
     private String password;
     private String firstName;
     private String secondName;
-    private int age;
+    private int age=-1;
     private String gender;
     private int weight;
     private List<String> ingredientsNo;
     private List<String> ingredientsYes;
-    private List<Integer> ingredientsYesGoalsQty;
-    private List<Integer> ingredientsYesTrackedQty;
+    private List<String> ingredientsYesGoalsQty;
+    private List<String> ingredientsYesTrackedQty;
     private int calorieGoalsQty;
     private int calorieTrackedQty;
     private Map<String, Stats> stats;
 
-    public User(){
 
+    public User(){
+        //this.age = -1;
+        //this.weight = -1;
     }
 
-    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<Integer> ingredientsYesGoalsQty, List<Integer> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
+    public User(int id, String email, String password, String firstName, String secondName, int age, String gender, int weight, List<String> ingredientsNo, List<String> ingredientsYes, List<String> ingredientsYesGoalsQty, List<String> ingredientsYesTrackedQty, int calorieGoalsQty, int calorieTrackedQty, Map<String, Stats> stats) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -41,6 +47,35 @@ public class User {
         this.calorieTrackedQty = calorieTrackedQty;
         this.stats = stats;
     }
+
+    private User(Parcel in) {
+        id = in.readInt();
+        email = in.readString();
+        password = in.readString();
+        firstName = in.readString();
+        secondName = in.readString();
+        age = in.readInt();
+        gender = in.readString();
+        weight = in.readInt();
+        ingredientsNo = in.createStringArrayList();
+        ingredientsYes = in.createStringArrayList();
+        ingredientsYesGoalsQty = in.createStringArrayList();
+        ingredientsYesTrackedQty = in.createStringArrayList();
+        calorieGoalsQty = in.readInt();
+        calorieTrackedQty = in.readInt();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -122,19 +157,19 @@ public class User {
         this.ingredientsYes = ingredientsYes;
     }
 
-    public List<Integer> getIngredientsYesGoalsQty() {
+    public List<String> getIngredientsYesGoalsQty() {
         return ingredientsYesGoalsQty;
     }
 
-    public void setIngredientsYesGoalsQty(List<Integer> ingredientsYesGoalsQty) {
+    public void setIngredientsYesGoalsQty(List<String> ingredientsYesGoalsQty) {
         this.ingredientsYesGoalsQty = ingredientsYesGoalsQty;
     }
 
-    public List<Integer> getIngredientsYesTrackedQty() {
+    public List<String> getIngredientsYesTrackedQty() {
         return ingredientsYesTrackedQty;
     }
 
-    public void setIngredientsYesTrackedQty(List<Integer> ingredientsYesTrackedQty) {
+    public void setIngredientsYesTrackedQty(List<String> ingredientsYesTrackedQty) {
         this.ingredientsYesTrackedQty = ingredientsYesTrackedQty;
     }
 
@@ -160,5 +195,28 @@ public class User {
 
     public void setStats(Map<String, Stats> stats) {
         this.stats = stats;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(firstName);
+        dest.writeString(secondName);
+        dest.writeInt(age);
+        dest.writeString(gender);
+        dest.writeInt(weight);
+        dest.writeStringList(ingredientsNo);
+        dest.writeStringList(ingredientsYes);
+        dest.writeStringList(ingredientsYesGoalsQty);
+        dest.writeStringList(ingredientsYesTrackedQty);
+        dest.writeInt(calorieGoalsQty);
+        dest.writeInt(calorieTrackedQty);
     }
 }
