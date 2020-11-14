@@ -8,15 +8,17 @@ import java.util.Map;
 
 public class Stats implements Parcelable {
     private int caloriesTrackedQty;
+    private HashMap<String, Integer> ingredientsYesTrackedQty;
     private HashMap<String, Integer> nutrients;
 
     public Stats(){
 
     }
 
-    public Stats(int caloriesTrackedQty, Map<String, Integer> nutrients) {
+    public Stats(int caloriesTrackedQty, HashMap<String, Integer> ingredientsYesTrackedQty, HashMap<String, Integer> nutrients) {
         this.caloriesTrackedQty = caloriesTrackedQty;
-        this.nutrients = (HashMap<String, Integer>) nutrients;
+        this.ingredientsYesTrackedQty = ingredientsYesTrackedQty;
+        this.nutrients = nutrients;
     }
 
     private Stats(Parcel in) {
@@ -34,6 +36,14 @@ public class Stats implements Parcelable {
             return new Stats[size];
         }
     };
+
+    public HashMap<String, Integer> getIngredientsYesTrackedQty() {
+        return ingredientsYesTrackedQty;
+    }
+
+    public void setIngredientsYesTrackedQty(Map<String, Integer> ingredientsYesTrackedQty) {
+        this.ingredientsYesTrackedQty = (HashMap<String, Integer>)ingredientsYesTrackedQty;
+    }
 
     public int getCaloriesTrackedQty() {
         return caloriesTrackedQty;
