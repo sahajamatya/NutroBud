@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.nutrobud.ui.home.Stats;
 import com.example.nutrobud.ui.home.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -209,6 +210,9 @@ public class SignUpReview extends AppCompatActivity {
 
     //Put items in the database
     public void updateDB(User user){
+        //Empty map made to allow scans to be entered later
+        Map<String, Stats> statsPlaceHolder = new HashMap<String, Stats>();
+
         //Put user into userList to load into db later
         userList.put("age", user.getAge());
         userList.put("calorieGoalsQty", user.getCalorieGoalsQty());
@@ -216,12 +220,15 @@ public class SignUpReview extends AppCompatActivity {
         userList.put("firstName", user.getFirstName());
         userList.put("gender", user.getGender());
         userList.put("id", user.getId());
+        userList.put("weight", user.getWeight());
         userList.put("ingredientsNo", user.getIngredientsNo());
         userList.put("ingredientsYes", user.getIngredientsYes());
         userList.put("ingredientsYesGoalsQty", user.getIngredientsYesGoalsQty());
         userList.put("password", user.getPassword());
         userList.put("secondName", user.getSecondName());
+        userList.put("stats", statsPlaceHolder);
 
+        //Load userList into the db
         dr.set(userList, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
