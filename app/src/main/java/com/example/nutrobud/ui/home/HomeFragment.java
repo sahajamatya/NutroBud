@@ -40,6 +40,8 @@ import com.example.nutrobud.StatisticsActivity;
 import com.example.nutrobud.ui.objectPassEx.Act1;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -94,10 +96,18 @@ public class HomeFragment<i> extends Fragment {
     private Map<String, Object> user = new HashMap<String, Object>(); //User obj will be wrapped into this map to be posted
     private Map<String, Stats> statsMapObj = new HashMap<String, Stats>();//Stats obj will be wrapped into this map to be added into User
     private Map<String, Integer> nutrients = new HashMap<String, Integer>();//Stats.nutrients will be wrapped into this map to be added to Stats
+    private Map<String, Integer> ingYesTrackedQty = new HashMap<String, Integer>();
     private Stats statsObj = new Stats();
     private User userDBData;
     private FirebaseFirestore userDB = FirebaseFirestore.getInstance();//Firestore ref to pull user data
-    private DocumentReference dr = FirebaseFirestore.getInstance().document("users/10001");//Document ref to post data
+    private DocumentReference dr;
+
+
+    //Firebase Auth Gang
+    private FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+    private int currUserID;
+    private int currUserIndex;
+
 
     //List where pulled data will be kept on a per index basis
     private List<User> userData = new ArrayList<>();
@@ -154,10 +164,17 @@ public class HomeFragment<i> extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshot) {
                 if(!queryDocumentSnapshot.isEmpty()){
                     List<DocumentSnapshot> userDBDataList = queryDocumentSnapshot.getDocuments();
+                    int indexCounter=-1;
                     for(DocumentSnapshot d: userDBDataList){
+                        indexCounter++;
                         userDBData = d.toObject(User.class);
                         userData.add(userDBData);
+                        if(userDBData.getEmail().equalsIgnoreCase(currUser.getEmail())){
+                            currUserID = userDBData.getId();
+                            currUserIndex = indexCounter;
+                        }
                     }
+                    dr = FirebaseFirestore.getInstance().document("users/"+currUserID);//Document ref to post data
                 }
             }
         });
@@ -227,8 +244,6 @@ public class HomeFragment<i> extends Fragment {
                 }
             }
         });
-
-
     }
 
     //Whenever the user is done taking a picture:
@@ -346,13 +361,13 @@ public class HomeFragment<i> extends Fragment {
             int trackedFat = 0;
 
             //check if it's already recorded today
-            if(userData.get(0).getStats().containsKey(todayDate)){
+            if(userData.get(currUserIndex).getStats().containsKey(todayDate)){
                 //the following are values fetched from the database so that new data can be added to them
-                trackedCalories = userData.get(0).getStats().get(todayDate).getCaloriesTrackedQty();
-                trackedCarbohydrate = userData.get(0).getStats().get(todayDate).getNutrients().get("carbohydrate");
-                trackedProtein = userData.get(0).getStats().get(todayDate).getNutrients().get("protein");
-                trackedSodium = userData.get(0).getStats().get(todayDate).getNutrients().get("sodium");
-                trackedFat = userData.get(0).getStats().get(todayDate).getNutrients().get("fat");
+                trackedCalories = userData.get(currUserIndex).getStats().get(todayDate).getCaloriesTrackedQty();
+                trackedCarbohydrate = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("carbohydrate");
+                trackedProtein = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("protein");
+                trackedSodium = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("sodium");
+                trackedFat = userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get("fat");
             }
 
             if(entityToSearch.equalsIgnoreCase("calories") && !caloriesScanStatus){
@@ -379,8 +394,21 @@ public class HomeFragment<i> extends Fragment {
                 }
                 fatScanStatus = true;
             }
+
+            if(userData.get(currUserIndex).getIngredientsYes().contains(entityToSearch)){
+                ingYesTrackedQty.put(entityToSearch, trackedStatsQty(entityToSearch)+entityQtyNum);
+            }
+            statsObj.setIngredientsYesTrackedQty(ingYesTrackedQty);
             statsObj.setNutrients(nutrients);
             statsMapObj.put(todayDate, statsObj);
+        }
+    }
+
+    public int trackedStatsQty(String entity){
+        if(userData.get(currUserIndex).getStats().containsKey(todayDate)){
+            return userData.get(currUserIndex).getStats().get(todayDate).getNutrients().get(entity);
+        } else {
+            return 0;
         }
     }
 
